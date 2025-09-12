@@ -12,13 +12,9 @@ export const metadata: Metadata = {
   description: 'Web App for Hac Book',
 };
 
-export default async function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang='en' className='select-none' suppressHydrationWarning>
+    <html lang='en' suppressHydrationWarning>
       <body className={fnt.className}>
         <Header />
         <Main>{children}</Main>
