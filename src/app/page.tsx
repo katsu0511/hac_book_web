@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 import { getAuth } from '@/lib/auth';
+import Link from 'next/link';
 
 export default function Home() {
   const router = useRouter();
@@ -16,32 +17,10 @@ export default function Home() {
     checkAuth();
   }, [checkAuth]);
 
-  const logout = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API}/logout`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include'
-      });
-
-      if (!res.ok) {
-        router.replace('/');
-        return;
-      };
-
-      router.replace('/login');
-    } catch (error) {
-      console.log(error instanceof Error ? error.message : 'unknown error');
-    }
-  }
-
   return (
     <div>
       <h2>Hello World!</h2>
-      <button className='block bg-blue-500 text-white h-10 w-20 duration-300 hover:bg-white hover:text-blue-500 cursor-pointer' onClick={logout}>Logout</button>
+      <Link href={'/categories'}>Category</Link>
     </div>
   );
 }
