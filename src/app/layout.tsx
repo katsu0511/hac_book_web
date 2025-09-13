@@ -1,6 +1,7 @@
 import './globals.css';
 import { Inconsolata } from 'next/font/google';
 import type { Metadata } from 'next';
+import { AuthProvider } from './context/AuthContext';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Main from '@/components/Main';
@@ -16,9 +17,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang='en' suppressHydrationWarning>
       <body className={fnt.className}>
-        <Header />
-        <Main>{children}</Main>
-        <Footer />
+        <AuthProvider>
+          <Header />
+          <Main>{children}</Main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
