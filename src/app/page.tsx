@@ -1,21 +1,17 @@
 'use client';
 
+import { useAuth } from './context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect } from 'react';
-import { getAuth } from '@/lib/auth';
+import { useEffect } from 'react';
 import Link from 'next/link';
 
 export default function Home() {
+  const { authenticated } = useAuth();
   const router = useRouter();
 
-  const checkAuth = useCallback(async () => {
-    const authenticated = await getAuth();
-    if (!authenticated) router.replace('/login');
-  }, [router]);
-
   useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
+    if (!authenticated) router.replace('/login');
+  }, [authenticated, router]);
 
   return (
     <div>
