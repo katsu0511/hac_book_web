@@ -1,6 +1,7 @@
 import './globals.css';
 import { Inconsolata } from 'next/font/google';
 import type { Metadata } from 'next';
+import { AuthProvider } from './context/AuthContext';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Main from '@/components/Main';
@@ -12,17 +13,15 @@ export const metadata: Metadata = {
   description: 'Web App for Hac Book',
 };
 
-export default async function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang='en' className='select-none' suppressHydrationWarning>
+    <html lang='en' suppressHydrationWarning>
       <body className={fnt.className}>
-        <Header />
-        <Main>{children}</Main>
-        <Footer />
+        <AuthProvider>
+          <Header />
+          <Main>{children}</Main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

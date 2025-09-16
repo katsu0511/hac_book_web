@@ -1,12 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect } from 'react';
-import { getAuth } from '@/lib/auth';
 import Input from './Input';
 import Button from './Button';
 import PageLink from './PageLink';
+import { useAuth } from '@/app/context/AuthContext';
 
 export default function SignupForm() {
   const [name, setName] = useState('');
@@ -14,16 +13,12 @@ export default function SignupForm() {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [error, setError] = useState('');
+  const { authenticated, refreshAuth } = useAuth();
   const router = useRouter();
 
-  const checkAuth = useCallback(async () => {
-    const authenticated = await getAuth();
-    if (authenticated) router.replace('/');
-  }, [router]);
-
   useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
+    if (authenticated) router.replace('/');
+  }, [authenticated, router]);
 
   const signup = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -56,6 +51,7 @@ export default function SignupForm() {
         return;
       };
 
+      await refreshAuth();
       router.replace('/');
     } catch (error) {
       setError(error instanceof Error ? error.message : 'unknown error');
