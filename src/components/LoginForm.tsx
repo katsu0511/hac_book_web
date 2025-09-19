@@ -52,8 +52,8 @@ export default function LoginForm() {
   return (
     <div className='flex items-center w-full h-full'>
       <form className='w-full' onSubmit={login}>
-        <Input label='Email' type='text' value={email} onChange={(e) => setEmail(e.target.value)} />
-        <Input label='Password' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
+        <Input label='Email' type='text' value={email} autoComplete='email' onChange={(e) => setEmail(e.target.value)} />
+        <Input label='Password' type='password' value={password} autoComplete='current-password' onChange={(e) => setPassword(e.target.value)} />
         <Button usage='Login' error={error} />
         <PageLink usage='signup' />
       </form>
