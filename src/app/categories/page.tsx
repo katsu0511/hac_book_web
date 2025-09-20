@@ -19,25 +19,12 @@ export default function Categories() {
   }, [authenticated, loading, router]);
 
   const category = useCallback(async () => {
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API}/display/category`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include'
-      });
-
-      if (!res.ok) {
-        router.replace('/');
-        return;
-      };
-
-      const json = await res.json();
-      if (json.income) setIncomes(json.income);
-      if (json.expense) setExpenses(json.expense);
-    } catch (error) {
-      console.log(error instanceof Error ? error.message : 'unknown error');
+    const categories = await getMyCategories();
+    if (categories === undefined) return;
+    else if (categories === null) router.replace('/');
+    else {
+      if (categories.income) setIncomes(categories.income);
+      if (categories.expense) setExpenses(categories.expense);
     }
   }, [router]);
 
