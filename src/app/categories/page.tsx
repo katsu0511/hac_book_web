@@ -1,19 +1,20 @@
 'use client';
 
 import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '@/app/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 
 export default function Categories() {
   const [incomes, setIncomes] = useState<Category[]>([]);
   const [expenses, setExpenses] = useState<Category[]>([]);
-  const { authenticated } = useAuth();
+  const { authenticated, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
+    if (loading) return;
     if (!authenticated) router.replace('/login');
-  }, [authenticated, router]);
+  }, [authenticated, loading, router]);
 
   const category = useCallback(async () => {
     try {
