@@ -7,3 +7,15 @@ type Category = {
   description: string
   is_active: boolean
 };
+
+type MyCategories = {
+  expense: Category[]
+  income: Category[]
+};
+
+type CategoryFormData = {
+  parentId: string
+  name: string
+  type: string
+  description: string
+};

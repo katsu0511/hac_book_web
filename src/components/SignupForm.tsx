@@ -61,10 +61,10 @@ export default function SignupForm() {
   return (
     <div className='flex items-center w-full h-full'>
       <form className='w-full' onSubmit={signup}>
-        <Input label='Name' type='text' value={name} onChange={(e) => setName(e.target.value)}/>
-        <Input label='Email' type='text' value={email} onChange={(e) => setEmail(e.target.value)} />
-        <Input label='Password' type='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
-        <Input label='Password Confirmation' type='password' value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)}/>
+        <Input label='Name' type='text' value={name} autoComplete='name' onChange={(e) => setName(e.target.value)}/>
+        <Input label='Email' type='text' value={email} autoComplete='email' onChange={(e) => setEmail(e.target.value)} />
+        <Input label='Password' type='password' value={password} autoComplete='new-password' onChange={(e) => setPassword(e.target.value)}/>
+        <Input label='Password Confirmation' type='password' value={passwordConfirm} autoComplete='new-password' onChange={(e) => setPasswordConfirm(e.target.value)}/>
         <Button usage='Signup' error={error} />
         <PageLink usage='login' />
       </form>
