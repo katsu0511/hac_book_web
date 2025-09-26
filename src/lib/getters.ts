@@ -1,5 +1,25 @@
 'use client';
 
+export async function getCategory(id: string): Promise<Category | null | undefined> {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/category/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include'
+    });
+
+    if (!res.ok) return null;
+
+    const category: Category = await res.json();
+    return category;
+  } catch (error) {
+    console.log(error instanceof Error ? error.message : 'unknown error');
+    return;
+  }
+}
+
 export async function getMyCategories(): Promise<MyCategories | null | undefined> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/display/category`, {
