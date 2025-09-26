@@ -1,11 +1,11 @@
 type Category = {
   id: string
-  user_id: string
-  parent_id: string
+  userId: string
+  parentId: string
   name: string
   type: CategoryType
   description: string
-  is_active: boolean
+  active: boolean
 };
 
 type MyCategories = {
@@ -14,6 +14,7 @@ type MyCategories = {
 };
 
 type CategoryFormData = {
+  id: string
   parentId: string
   name: string
   type: string
