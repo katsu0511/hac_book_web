@@ -6,7 +6,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { useForm, FieldErrors, Controller } from 'react-hook-form';
 import { FormControl, InputLabel, Select, MenuItem, TextField, Button, FormHelperText } from '@mui/material';
 import { getParentCategories } from '@/lib/getters';
-import { addCategories } from '@/lib/actions';
+import { addCategory } from '@/lib/actions';
 
 const defaultValues = {
   parentId: '',
@@ -15,13 +15,13 @@ const defaultValues = {
   description: ''
 };
 
-export default function Categories() {
+export default function AddCategory() {
   const [parentCategories, setParentCategories] = useState<Category[]>([]);
   const { authenticated, loading } = useAuth();
   const router = useRouter();
   const { control, handleSubmit, formState: { errors } } = useForm<CategoryFormData>({ defaultValues });
   const onsubmit = async (data: CategoryFormData) => {
-    const message = await addCategories(data);
+    const message = await addCategory(data);
     console.log(message);
   };
   const onerror = (err: FieldErrors<CategoryFormData>) => console.log(err);
