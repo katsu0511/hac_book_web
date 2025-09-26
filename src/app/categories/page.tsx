@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { getMyCategories } from '@/lib/getters';
+import CategoryDisplay from '@/components/CategoryDisplay';
 
 export default function Categories() {
   const [incomes, setIncomes] = useState<Category[]>([]);
@@ -37,11 +38,11 @@ export default function Categories() {
       <h2>Category</h2>
        <h3 className='bg-red-500'>Expense</h3>
       {expenses.map(expense => (
-        <p key={expense.id} className='bg-green-200'>{expense.name}</p>
+        <CategoryDisplay key={expense.id} category={expense} />
       ))}
       <h3 className='bg-red-500'>Income</h3>
       {incomes.map(income => (
-        <p key={income.id} className='bg-blue-200'>{income.name}</p>
+        <CategoryDisplay key={income.id} category={income} />
       ))}
       <Link href={'/categories/add'} >Add Category</Link>
     </div>
