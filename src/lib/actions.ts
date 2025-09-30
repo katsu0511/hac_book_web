@@ -2,7 +2,7 @@
 
 export async function addCategory(data: CategoryFormData) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/add/category`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/categories`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -22,8 +22,8 @@ export async function addCategory(data: CategoryFormData) {
 
 export async function modifyCategory(data: CategoryFormData) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/modify/category`, {
-      method: 'POST',
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/categories/${data.id}`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
