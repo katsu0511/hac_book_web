@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import { useAuth } from '@/app/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { useState, useCallback, useEffect } from 'react';
+import { useMemo, useState, useCallback, useEffect } from 'react';
 import { useForm, FieldErrors, Controller } from 'react-hook-form';
 import { FormControl, InputLabel, Select, MenuItem, TextField, Button, FormHelperText } from '@mui/material';
 import { getCategory, getParentCategories } from '@/lib/getters';
@@ -12,13 +12,13 @@ import { modifyCategory } from '@/lib/actions';
 export default function ModifyCategory() {
   const params = useParams();
   const id = params?.id;
-  const defaultValues = {
+  const defaultValues = useMemo(() => ({
     id: '',
     parentId: '',
     name: '',
     type: '',
     description: ''
-  };
+  }), []);
   const [parentCategories, setParentCategories] = useState<Category[]>([]);
   const [modifiedCategory, setModifiedCategory] = useState<Category>();
   const { authenticated, loading } = useAuth();
@@ -33,12 +33,12 @@ export default function ModifyCategory() {
   useEffect(() => {
     if (modifiedCategory) {
       setValue('id', modifiedCategory.id);
-      setValue('parentId', modifiedCategory.parentId);
+      setValue('parentId', modifiedCategory.parentId ?? defaultValues.id);
       setValue('name', modifiedCategory.name);
       setValue('type', modifiedCategory.type);
-      setValue('description', modifiedCategory.description);
+      setValue('description', modifiedCategory.description ?? defaultValues.description);
     }
-  }, [modifiedCategory, setValue]);
+  }, [modifiedCategory, setValue, defaultValues]);
 
   useEffect(() => {
     if (loading) return;
