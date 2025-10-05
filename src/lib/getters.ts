@@ -59,3 +59,23 @@ export async function getParentCategories(): Promise<Category[] | null | undefin
     return;
   }
 }
+
+export async function getTransactions(): Promise<Transaction[] | null | undefined> {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/transactions`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include'
+    });
+
+    if (!res.ok) return null;
+
+    const transactions: Transaction[] = await res.json();
+    return transactions;
+  } catch (error) {
+    console.log(error instanceof Error ? error.message : 'unknown error');
+    return;
+  }
+}
