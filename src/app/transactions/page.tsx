@@ -32,7 +32,7 @@ export default function Transactions() {
     <div>
       <h2>Transaction</h2>
       {transactions.map(transaction => (
-        <div key={transaction.id}>
+        <div key={transaction.id} className='border-4 border-blue-500'>
           <p>Category: {transaction.categoryId}</p>
           <Link href={`/transactions/modify/${transaction.id}`} className='bg-green-200'>{transaction.currency} {transaction.amount}</Link>
           <p>Description: {transaction.description}</p>
