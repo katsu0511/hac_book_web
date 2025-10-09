@@ -9,3 +9,12 @@ type Transaction = {
   createdAt: string
   updatedAt: string
 };
+
+type TransactionFormData = {
+  id: string
+  categoryId: string
+  amount: string
+  currency: string
+  description: string
+  transactionDate: string
+};
