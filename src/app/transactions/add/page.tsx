@@ -117,7 +117,7 @@ export default function AddTransaction() {
                 label='Description'
                 multiline
                 margin='normal'
-                error={'description' in errors}
+                error={!!errors.description}
                 helperText={errors.description?.message}
               />
             )}
@@ -137,7 +137,7 @@ export default function AddTransaction() {
                 label='Transaction Date'
                 slotProps={{inputLabel: { shrink: true} }}
                 margin='normal'
-                error={'transactionDate' in errors}
+                error={!!errors.transactionDate}
                 helperText={errors.transactionDate?.message}
               />
             )}
