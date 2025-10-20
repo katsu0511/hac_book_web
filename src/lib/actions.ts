@@ -59,3 +59,23 @@ export async function addTransaction(data: TransactionFormData) {
     return error instanceof Error ? error.message : 'unknown error';
   }
 }
+
+export async function modifyTransaction(data: TransactionFormData) {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/transactions/${data.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: data.id, categoryId: data.categoryId, amount: data.amount, currency: data.currency, description: data.description, transactionDate: data.transactionDate }),
+      credentials: 'include'
+    });
+
+    if (!res.ok) return 'failed to modify transaction';
+
+    const transaction = await res.json();
+    return transaction;
+  } catch (error) {
+    return error instanceof Error ? error.message : 'unknown error';
+  }
+}

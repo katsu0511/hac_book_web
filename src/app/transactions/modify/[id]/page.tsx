@@ -1,32 +1,47 @@
 'use client';
 
+import { useParams } from 'next/navigation';
 import { useAuth } from '@/app/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { useState, useCallback, useEffect } from 'react';
+import { useMemo, useState, useCallback, useEffect } from 'react';
 import { useForm, FieldErrors, Controller } from 'react-hook-form';
-import { FormControl, InputLabel, Select, MenuItem, TextField, Button, FormHelperText } from '@mui/material';
-import { getMyCategories } from '@/lib/getters';
-import { addTransaction } from '@/lib/actions';
+import { FormControl, InputLabel, Select, MenuItem, TextField, Button } from '@mui/material';
+import { getMyCategories, getTransaction } from '@/lib/getters';
+import { modifyTransaction } from '@/lib/actions';
 
-const defaultValues = {
-  categoryId: '',
-  amount: '',
-  currency: 'CAD',
-  description: '',
-  transactionDate: new Date().toISOString().split('T')[0]
-};
-
-export default function AddTransaction() {
+export default function ModifyTransaction() {
+  const params = useParams();
+  const id = params?.id;
+  const defaultValues = useMemo(() => ({
+    id: '',
+    categoryId: '',
+    amount: '',
+    currency: 'CAD',
+    description: '',
+    transactionDate: ''
+  }), []);
   const [expenses, setExpenses] = useState<Category[]>([]);
   const [incomes, setIncomes] = useState<Category[]>([]);
+  const [modifiedTransaction, setModifiedTransaction] = useState<Transaction>();
   const { authenticated, loading } = useAuth();
   const router = useRouter();
-  const { control, handleSubmit, formState: { errors } } = useForm<TransactionFormData>({ defaultValues });
+  const { control, handleSubmit, formState: { errors }, setValue } = useForm<TransactionFormData>({ defaultValues });
   const onsubmit = async (data: TransactionFormData) => {
-    const transaction = await addTransaction(data);
+    const transaction = await modifyTransaction(data);
     console.log(transaction);
   };
   const onerror = (err: FieldErrors<TransactionFormData>) => console.log(err);
+
+  useEffect(() => {
+    if (modifiedTransaction) {
+      setValue('id', modifiedTransaction.id);
+      setValue('categoryId', modifiedTransaction.categoryId);
+      setValue('amount', modifiedTransaction.amount);
+      setValue('currency', modifiedTransaction.currency);
+      setValue('description', modifiedTransaction.description ?? defaultValues.description);
+      setValue('transactionDate', modifiedTransaction.transactionDate);
+    }
+  }, [modifiedTransaction, setValue, defaultValues]);
 
   useEffect(() => {
     if (loading) return;
@@ -47,18 +62,26 @@ export default function AddTransaction() {
     category();
   }, [category]);
 
+  const transaction = useCallback(async () => {
+      const transaction = await getTransaction(id as string);
+      if (transaction === undefined) return;
+      else if (transaction === null) router.replace('/');
+      else setModifiedTransaction(transaction);
+    }, [id, router]);
+
+    useEffect(() => {
+      if (id) transaction();
+    }, [id, transaction]);
+
   return (
     <div>
-      <h2>Add Transaction</h2>
+      <h2>Modify Transaction</h2>
       <form onSubmit={handleSubmit(onsubmit, onerror)} noValidate>
         <FormControl fullWidth error={!!errors.categoryId}>
           <InputLabel id='categoryId'>Category</InputLabel>
           <Controller
             name='categoryId'
             control={control}
-            rules={{
-              required: 'category is required'
-            }}
             render={({ field }) => (
               <Select {...field} labelId='categoryId' label='Category'>
                 {expenses.map(expense => (
@@ -70,7 +93,6 @@ export default function AddTransaction() {
               </Select>
             )}
           />
-          <FormHelperText error={'categoryId' in errors}>{errors.categoryId?.message}</FormHelperText>
         </FormControl>
         <FormControl fullWidth error={!!errors.amount}>
           <Controller

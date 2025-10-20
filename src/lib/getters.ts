@@ -60,6 +60,26 @@ export async function getParentCategories(): Promise<Category[] | null | undefin
   }
 }
 
+export async function getTransaction(id: string): Promise<Transaction | null | undefined> {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/transactions/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include'
+    });
+
+    if (!res.ok) return null;
+
+    const transaction: Transaction = await res.json();
+    return transaction;
+  } catch (error) {
+    console.log(error instanceof Error ? error.message : 'unknown error');
+    return;
+  }
+}
+
 export async function getTransactions(): Promise<Transaction[] | null | undefined> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/transactions`, {
