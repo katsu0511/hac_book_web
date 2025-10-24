@@ -79,3 +79,23 @@ export async function modifyTransaction(data: TransactionFormData) {
     return error instanceof Error ? error.message : 'unknown error';
   }
 }
+
+export async function deleteTransaction(id: string) {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/transactions/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id }),
+      credentials: 'include'
+    });
+
+    if (!res.ok) return 'failed to delete transaction';
+
+    const deleted = await res.json();
+    return deleted;
+  } catch (error) {
+    return error instanceof Error ? error.message : 'unknown error';
+  }
+}
