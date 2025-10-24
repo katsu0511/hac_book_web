@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { getTransactions } from '@/lib/getters';
+import { Button } from '@mui/material';
+import { deleteTransaction } from '@/lib/actions';
 
 export default function Transactions() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -28,6 +30,11 @@ export default function Transactions() {
     transaction();
   }, [transaction]);
 
+  const onDelete = async(id: string) => {
+    const deleted = await deleteTransaction(id);
+    if (deleted) setTransactions(prev => prev.filter(t => t.id !== id));
+  };
+
   return (
     <div>
       <h2>Transaction</h2>
@@ -37,6 +44,10 @@ export default function Transactions() {
           <Link href={`/transactions/modify/${transaction.id}`} className='bg-green-200'>{transaction.currency} {transaction.amount}</Link>
           <p>Description: {transaction.description}</p>
           <p>Transaction Date: {transaction.transactionDate}</p>
+          <Button
+            variant='contained'
+            onClick={() => onDelete(transaction.id)}
+          >Delete</Button>
         </div>
       ))}
       <Link href={'/transactions/add'} >Add Transaction</Link>
