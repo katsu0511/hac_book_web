@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { getMyCategories } from '@/lib/getters';
-import CategoryDisplay from '@/components/CategoryDisplay';
+import CategoryDisplay from '@/components/Atoms/CategoryDisplay';
 
 export default function Categories() {
   const [incomes, setIncomes] = useState<Category[]>([]);

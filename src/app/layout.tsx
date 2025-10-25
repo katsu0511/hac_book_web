@@ -2,9 +2,9 @@ import './globals.css';
 import { Inconsolata } from 'next/font/google';
 import type { Metadata } from 'next';
 import { AuthProvider } from './context/AuthContext';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import Main from '@/components/Main';
+import Header from '@/components/Organisms/Header';
+import Footer from '@/components/Organisms/Footer';
+import Main from '@/components/Templates/Main';
 
 const fnt = Inconsolata({ subsets: ['latin'] });
 

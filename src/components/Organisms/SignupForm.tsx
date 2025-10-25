@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Input from './Input';
+import Input from './Organisms/Input';
 import Button from './Button';
 import PageLink from './PageLink';
 import { useAuth } from '@/app/context/AuthContext';

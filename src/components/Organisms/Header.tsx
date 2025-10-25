@@ -1,7 +1,7 @@
 'use client';
 
-import Link from "next/link";
-import LogoutButton from './LogoutButton';
+import Link from 'next/link';
+import LogoutButton from '../Atoms/LogoutButton';
 import { useAuth } from '@/app/context/AuthContext';
 
 export default function Header() {
