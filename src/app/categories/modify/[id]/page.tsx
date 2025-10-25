@@ -118,8 +118,8 @@ export default function ModifyCategory() {
             rules={{ required: 'type is required' }}
             render={({ field }) => (
               <Select {...field} labelId='type' label='Type'>
-                <MenuItem key="expense" value='EXPENSE'>Expense</MenuItem>
-                <MenuItem key="income" value='INCOME'>Income</MenuItem>
+                <MenuItem key='expense' value='EXPENSE'>Expense</MenuItem>
+                <MenuItem key='income' value='INCOME'>Income</MenuItem>
               </Select>
             )}
           />
