@@ -13,12 +13,13 @@ export default function SignupForm() {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [error, setError] = useState('');
-  const { authenticated, refreshAuth } = useAuth();
+  const { authenticated, loading, refreshAuth } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
+    if (loading) return;
     if (authenticated) router.replace('/');
-  }, [authenticated, router]);
+  }, [authenticated, loading, router]);
 
   const signup = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -11,12 +11,13 @@ export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { authenticated, refreshAuth } = useAuth();
+  const { authenticated, loading, refreshAuth } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
+    if (loading) return;
     if (authenticated) router.replace('/');
-  }, [authenticated, router]);
+  }, [authenticated, loading, router]);
 
   const login = async (e: React.FormEvent) => {
     e.preventDefault();
