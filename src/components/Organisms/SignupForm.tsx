@@ -6,6 +6,7 @@ import Input from './Input';
 import Button from '../Molecules/Button';
 import PageLink from '../Molecules/PageLink';
 import { useAuth } from '@/app/context/AuthContext';
+import { signup } from '@/lib/actions';
 
 export default function SignupForm() {
   const [name, setName] = useState('');
@@ -21,7 +22,7 @@ export default function SignupForm() {
     if (authenticated) router.replace('/');
   }, [authenticated, loading, router]);
 
-  const signup = async(e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignup = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
     if (!name || !email || !password || !passwordConfirm) {
@@ -32,36 +33,28 @@ export default function SignupForm() {
       return;
     }
 
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API}/signup`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, password }),
-        credentials: 'include'
-      });
-
-      if (!res.ok) {
-        const json = await res.json();
-        let errors = '';
-        if (json.email) errors += json.email;
-        if (json.password) errors += `\n${json.password}`;
-        if (json.signupFailed) errors += `\n${json.signupFailed}`;
-        setError(errors);
-        return;
-      };
-
-      await refreshAuth();
-      router.replace('/');
-    } catch (error) {
-      setError(error instanceof Error ? error.message : 'unknown error');
+    const res = await signup(name, email, password);
+    if (typeof res === 'string') {
+      setError(res);
+      return;
     }
+    if (!res.ok) {
+      const json = await res.json();
+      let errors = '';
+      if (json.email) errors += json.email;
+      if (json.password) errors += `\n${json.password}`;
+      if (json.signupFailed) errors += `\n${json.signupFailed}`;
+      setError(errors);
+      return;
+    };
+
+    await refreshAuth();
+    router.replace('/');
   };
 
   return (
     <div className='flex items-center w-full h-full'>
-      <form className='w-full' onSubmit={signup}>
+      <form className='w-full' onSubmit={handleSignup}>
         <Input label='Name' type='text' value={name} autoComplete='name' onChange={(e) => setName(e.target.value)}/>
         <Input label='Email' type='text' value={email} autoComplete='email' onChange={(e) => setEmail(e.target.value)} />
         <Input label='Password' type='password' value={password} autoComplete='new-password' onChange={(e) => setPassword(e.target.value)}/>
