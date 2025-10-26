@@ -1,5 +1,20 @@
 'use client';
 
+export async function login(email: string, password: string) {
+  try {
+    return await fetch(`${process.env.NEXT_PUBLIC_API}/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+      credentials: 'include'
+    });
+  } catch (error) {
+    return error instanceof Error ? error.message : 'unknown error';
+  }
+}
+
 export async function addCategory(data: CategoryFormData) {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/categories`, {
