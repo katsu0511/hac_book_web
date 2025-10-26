@@ -6,6 +6,7 @@ import Input from './Input';
 import Button from '../Molecules/Button';
 import PageLink from '../Molecules/PageLink';
 import { useAuth } from '@/app/context/AuthContext';
+import { login } from '@/lib/actions';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
@@ -19,7 +20,7 @@ export default function LoginForm() {
     if (authenticated) router.replace('/');
   }, [authenticated, loading, router]);
 
-  const login = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     if (!email || !password) {
@@ -27,32 +28,24 @@ export default function LoginForm() {
       return;
     }
 
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API}/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-        credentials: 'include'
-      });
-
-      if (!res.ok) {
-        const json = await res.json();
-        if (json.loginFailed) setError(json.loginFailed);
-        return;
-      };
-
-      await refreshAuth();
-      router.replace('/');
-    } catch (error) {
-      setError(error instanceof Error ? error.message : 'unknown error');
+    const res = await login(email, password);
+    if (typeof res === 'string') {
+      setError(res);
+      return;
     }
+    if (!res.ok) {
+      const json = await res.json();
+      if (json.loginFailed) setError(json.loginFailed);
+      return;
+    };
+
+    await refreshAuth();
+    router.replace('/');
   };
 
   return (
     <div className='flex items-center w-full h-full'>
-      <form className='w-full' onSubmit={login}>
+      <form className='w-full' onSubmit={handleLogin}>
         <Input label='Email' type='text' value={email} autoComplete='email' onChange={(e) => setEmail(e.target.value)} />
         <Input label='Password' type='password' value={password} autoComplete='current-password' onChange={(e) => setPassword(e.target.value)} />
         <Button usage='Login' error={error} />
