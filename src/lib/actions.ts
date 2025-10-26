@@ -15,6 +15,21 @@ export async function login(email: string, password: string) {
   }
 }
 
+export async function signup(name: string, email: string, password: string) {
+  try {
+    return await fetch(`${process.env.NEXT_PUBLIC_API}/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email, password }),
+      credentials: 'include'
+    });
+  } catch (error) {
+    return error instanceof Error ? error.message : 'unknown error';
+  }
+}
+
 export async function addCategory(data: CategoryFormData) {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/categories`, {
