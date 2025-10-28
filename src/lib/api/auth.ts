@@ -1,0 +1,80 @@
+import { login, signup } from '@/lib/api/actions';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+
+export const getAuth = async (): Promise<boolean> => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/check-auth`, {
+      method: 'GET',
+      credentials: 'include'
+    });
+    if (!res.ok) return false;
+    const json = await res.json();
+    return json.authenticated;
+  } catch (error) {
+    console.error('Auth check failed:', error);
+    return false;
+  }
+}
+
+export const handleLogin = async (
+  email: string,
+  password: string,
+  setError: (error: string) => void,
+  refreshAuth: () => Promise<void>,
+  router: AppRouterInstance,
+) => {
+  setError('');
+  if (!email || !password) {
+    setError('input your email and password');
+    return;
+  }
+
+  const res = await login(email, password);
+  if (typeof res === 'string') {
+    setError(res);
+    return;
+  }
+  if (!res.ok) {
+    const json = await res.json();
+    if (json.loginFailed) setError(json.loginFailed);
+    return;
+  };
+
+  await refreshAuth();
+  router.replace('/');
+}
+
+export const handleSignup = async (
+  name: string,
+  email: string,
+  password: string,
+  passwordConfirm: string,
+  setError: (error: string) => void,
+  refreshAuth: () => Promise<void>,
+  router: AppRouterInstance
+) => {
+  setError('');
+  if (!name || !email || !password || !passwordConfirm) {
+    setError('input your name, email and password');
+    return;
+  } else if (password !== passwordConfirm) {
+    setError('password doesn\'t match');
+    return;
+  }
+
+  const res = await signup(name, email, password);
+  if (typeof res === 'string') {
+    setError(res);
+    return;
+  }
+  if (!res.ok) {
+    const json = await res.json();
+    let errors = '';
+    if (json.email) errors += json.email;
+    if (json.password) errors += `\n${json.password}`;
+    if (json.signupFailed) errors += `\n${json.signupFailed}`;
+    setError(errors);
+    return;
+  };
+  handleLogin(email, password, setError, refreshAuth, router);
+}
