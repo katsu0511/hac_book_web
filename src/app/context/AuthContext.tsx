@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { getAuth } from '@/lib/auth';
+import { getAuth } from '@/lib/api/auth';
 
 type AuthContextType = {
   authenticated: boolean;
