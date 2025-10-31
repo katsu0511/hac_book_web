@@ -6,8 +6,8 @@ import { useRouter } from 'next/navigation';
 import { useMemo, useState, useCallback, useEffect } from 'react';
 import { useForm, FieldErrors, Controller } from 'react-hook-form';
 import { FormControl, InputLabel, Select, MenuItem, TextField, Button, FormHelperText } from '@mui/material';
-import { getCategory, getParentCategories } from '@/lib/getters';
-import { modifyCategory } from '@/lib/actions';
+import { getCategory, getParentCategories } from '@/lib/api/getters';
+import { modifyCategory } from '@/lib/api/actions';
 
 export default function ModifyCategory() {
   const params = useParams();
