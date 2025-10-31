@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useState, useCallback, useEffect } from 'react';
 import { useForm, FieldErrors, Controller } from 'react-hook-form';
 import { FormControl, InputLabel, Select, MenuItem, TextField, Button, FormHelperText } from '@mui/material';
-import { getMyCategories } from '@/lib/getters';
-import { addTransaction } from '@/lib/actions';
+import { getMyCategories } from '@/lib/api/getters';
+import { addTransaction } from '@/lib/api/actions';
 
 const defaultValues = {
   categoryId: '',

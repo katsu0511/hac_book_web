@@ -5,8 +5,8 @@ import { useAuth } from '@/app/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 import Link from 'next/link';
-import { getMyCategories } from '@/lib/getters';
-import CategoryDisplay from '@/components/CategoryDisplay';
+import { getMyCategories } from '@/lib/api/getters';
+import CategoryDisplay from '@/components/Atoms/CategoryDisplay';
 
 export default function Categories() {
   const [incomes, setIncomes] = useState<Category[]>([]);

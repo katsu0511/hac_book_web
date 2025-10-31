@@ -5,9 +5,9 @@ import { useAuth } from '@/app/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 import Link from 'next/link';
-import { getTransactions } from '@/lib/getters';
 import { Button } from '@mui/material';
-import { deleteTransaction } from '@/lib/actions';
+import { getTransactions } from '@/lib/api/getters';
+import { deleteTransaction } from '@/lib/api/actions';
 
 export default function Transactions() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
