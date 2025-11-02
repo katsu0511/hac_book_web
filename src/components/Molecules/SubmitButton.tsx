@@ -6,7 +6,7 @@ export default function SubmitButton({ label, error, loading }: { label: string,
   return (
     <Box py={2} textAlign='center'>
       {error && <Error error={error} />}
-      <AtomButton label={label} loading={loading} disabled={loading} />
+      <AtomButton label={label} loading={loading} />
     </Box>
   );
 }
