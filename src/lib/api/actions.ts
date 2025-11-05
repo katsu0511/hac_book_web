@@ -1,8 +1,8 @@
 'use client';
 
-export async function login(email: string, password: string) {
+export async function login(email: string, password: string) : Promise<Result> {
   try {
-    return await fetch(`${process.env.NEXT_PUBLIC_API}/login`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -10,8 +10,16 @@ export async function login(email: string, password: string) {
       body: JSON.stringify({ email, password }),
       credentials: 'include'
     });
+
+    if (!res.ok) {
+      const json = await res.json();
+      return { ok: res.ok, error: json.loginFailed };
+    }
+    
+    return { ok: res.ok, response: res };
   } catch (error) {
-    return error instanceof Error ? error.message : 'unknown error';
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return { ok: false, error: message };
   }
 }
 
