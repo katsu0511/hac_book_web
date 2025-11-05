@@ -15,9 +15,8 @@ export default function LoginForm() {
     if (authenticated) router.replace('/');
   }, [authenticated, loading, router]);
 
-  const login = async (e: React.FormEvent) => {
-    e.preventDefault();
-    handleLogin(email, password, setError, refreshAuth, router);
+  const login = async (data) => {
+    await handleLogin(data.email, data.password, setError, refreshAuth, router);
   };
 
   return (
