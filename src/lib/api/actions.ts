@@ -1,6 +1,6 @@
 'use client';
 
-export async function login(email: string, password: string) : Promise<Result> {
+export async function login(email: string, password: string): Promise<Result> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/login`, {
       method: 'POST',
@@ -15,7 +15,7 @@ export async function login(email: string, password: string) : Promise<Result> {
       const json = await res.json();
       return { ok: res.ok, error: json.loginFailed };
     }
-    
+
     return { ok: res.ok, response: res };
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
