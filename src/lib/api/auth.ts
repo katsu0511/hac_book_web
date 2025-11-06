@@ -24,21 +24,12 @@ export const handleLogin = async (
   router: AppRouterInstance,
 ) => {
   setError('');
-  if (!email || !password) {
-    setError('input your email and password');
-    return;
-  }
-
   const res = await login(email, password);
-  if (typeof res === 'string') {
-    setError(res);
+
+  if (!res.ok) {
+    setError(res.error);
     return;
   }
-  if (!res.ok) {
-    const json = await res.json();
-    if (json.loginFailed) setError(json.loginFailed);
-    return;
-  };
 
   await refreshAuth();
   router.replace('/');

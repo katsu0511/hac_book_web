@@ -1,5 +1,9 @@
+'use client';
+
+import { useAuthRedirectToLogin } from '@/lib/hooks/useAuthRedirect';
 import LoginForm from '@/components/Organisms/LoginForm';
 
-export default async function Login() {
+export default function Login() {
+  useAuthRedirectToLogin();
   return <LoginForm />;
 }

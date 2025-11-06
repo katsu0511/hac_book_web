@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect } from 'react';
-import Input from './Input';
-import Button from '../Molecules/Button';
-import PageLink from '../Molecules/PageLink';
+import Input from '../Molecules/FormElement';
+import Button from '../Molecules/SubmitButton';
+import PageLink from '../Molecules/LinkElement';
 import useAuthState from '@/lib/hooks/useAuthState';
 import { handleSignup } from '@/lib/api/auth';
 

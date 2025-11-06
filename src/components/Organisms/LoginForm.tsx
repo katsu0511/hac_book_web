@@ -1,33 +1,34 @@
 'use client';
 
-import { useEffect } from 'react';
-import Input from './Input';
-import Button from '../Molecules/Button';
-import PageLink from '../Molecules/PageLink';
 import useAuthState from '@/lib/hooks/useAuthState';
+import { useForm } from 'react-hook-form';
 import { handleLogin } from '@/lib/api/auth';
+import Form from '@/components/Organisms/Form';
+import FormElement from '../Molecules/FormElement';
+import SubmitButton from '../Molecules/SubmitButton';
+import LinkElement from '../Molecules/LinkElement';
+
+const defaultValues = {
+  email: '',
+  password: ''
+};
 
 export default function LoginForm() {
-  const { email, setEmail, password, setPassword, error, setError, authenticated, loading, refreshAuth, router } = useAuthState();
+  const { loadingState, setLoadingState, error, setError, refreshAuth, router } = useAuthState();
+  const { control, handleSubmit } = useForm<AuthFormData>({ defaultValues });
 
-  useEffect(() => {
-    if (loading) return;
-    if (authenticated) router.replace('/');
-  }, [authenticated, loading, router]);
-
-  const login = async (e: React.FormEvent) => {
-    e.preventDefault();
-    handleLogin(email, password, setError, refreshAuth, router);
+  const login = async (data: AuthFormData) => {
+    setLoadingState(true);
+    await handleLogin(data.email, data.password, setError, refreshAuth, router);
+    setLoadingState(false);
   };
 
   return (
-    <div className='flex items-center w-full h-full'>
-      <form className='w-full' onSubmit={login}>
-        <Input label='Email' type='text' value={email} autoComplete='email' onChange={(e) => setEmail(e.target.value)} />
-        <Input label='Password' type='password' value={password} autoComplete='current-password' onChange={(e) => setPassword(e.target.value)} />
-        <Button usage='Login' error={error} />
-        <PageLink usage='signup' />
-      </form>
-    </div>
+    <Form onSubmit={handleSubmit(login)}>
+      <FormElement name='email' label='Email' type='email' control={control} autoComplete='email' />
+      <FormElement name='password' label='Password' type='password' control={control} autoComplete='current-password' />
+      <SubmitButton label='Login' error={error} loading={loadingState} />
+      <LinkElement page='signup' />
+    </Form>
   );
 }

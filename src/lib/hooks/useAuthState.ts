@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { useAuth } from '@/app/context/AuthContext';
 import { useRouter } from 'next/navigation';
@@ -7,6 +9,7 @@ const useAuthState = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [loadingState, setLoadingState] = useState(false);
   const [error, setError] = useState('');
   const { authenticated, loading, refreshAuth } = useAuth();
   const router = useRouter();
@@ -20,6 +23,8 @@ const useAuthState = () => {
     setPassword,
     passwordConfirm,
     setPasswordConfirm,
+    loadingState,
+    setLoadingState,
     error,
     setError,
     authenticated,
