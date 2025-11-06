@@ -8,7 +8,7 @@ import useAuthState from '@/lib/hooks/useAuthState';
 import { handleLogin } from '@/lib/api/auth';
 
 export default function LoginForm() {
-  const { email, setEmail, password, setPassword, error, setError, authenticated, loading, refreshAuth, router } = useAuthState();
+  const { email, setEmail, password, setPassword, loadingState, setLoadingState, error, setError, authenticated, loading, refreshAuth, router } = useAuthState();
 
   useEffect(() => {
     if (loading) return;
@@ -16,7 +16,9 @@ export default function LoginForm() {
   }, [authenticated, loading, router]);
 
   const login = async (data) => {
+    setLoadingState(true);
     await handleLogin(data.email, data.password, setError, refreshAuth, router);
+    setLoadingState(false);
   };
 
   return (
