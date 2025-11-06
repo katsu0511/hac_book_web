@@ -5,10 +5,17 @@ import Input from './Input';
 import Button from '../Molecules/Button';
 import PageLink from '../Molecules/PageLink';
 import useAuthState from '@/lib/hooks/useAuthState';
+import { useForm } from 'react-hook-form';
 import { handleLogin } from '@/lib/api/auth';
+
+const defaultValues = {
+  email: '',
+  password: ''
+};
 
 export default function LoginForm() {
   const { email, setEmail, password, setPassword, loadingState, setLoadingState, error, setError, authenticated, loading, refreshAuth, router } = useAuthState();
+  const { control, handleSubmit } = useForm<AuthFormData>({ defaultValues });
 
   useEffect(() => {
     if (loading) return;
