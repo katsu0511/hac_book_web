@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import Input from './Input';
 import Button from '../Molecules/Button';
 import PageLink from '../Molecules/PageLink';
@@ -14,13 +13,8 @@ const defaultValues = {
 };
 
 export default function LoginForm() {
-  const { email, setEmail, password, setPassword, loadingState, setLoadingState, error, setError, authenticated, loading, refreshAuth, router } = useAuthState();
+  const { email, setEmail, password, setPassword, loadingState, setLoadingState, error, setError, refreshAuth, router } = useAuthState();
   const { control, handleSubmit } = useForm<AuthFormData>({ defaultValues });
-
-  useEffect(() => {
-    if (loading) return;
-    if (authenticated) router.replace('/');
-  }, [authenticated, loading, router]);
 
   const login = async (data: AuthFormData) => {
     setLoadingState(true);
