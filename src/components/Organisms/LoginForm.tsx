@@ -15,7 +15,7 @@ export default function LoginForm() {
     if (authenticated) router.replace('/');
   }, [authenticated, loading, router]);
 
-  const login = async (data) => {
+  const login = async (data: AuthFormData) => {
     setLoadingState(true);
     await handleLogin(data.email, data.password, setError, refreshAuth, router);
     setLoadingState(false);
