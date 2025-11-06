@@ -1,12 +1,12 @@
 'use client';
 
-import Input from './Input';
 import Button from '../Molecules/Button';
 import PageLink from '../Molecules/PageLink';
 import useAuthState from '@/lib/hooks/useAuthState';
 import { useForm } from 'react-hook-form';
 import { handleLogin } from '@/lib/api/auth';
 import Form from '@/components/Organisms/Form';
+import FormElement from '../Molecules/FormElement';
 
 const defaultValues = {
   email: '',
@@ -14,7 +14,7 @@ const defaultValues = {
 };
 
 export default function LoginForm() {
-  const { email, setEmail, password, setPassword, loadingState, setLoadingState, error, setError, refreshAuth, router } = useAuthState();
+  const { loadingState, setLoadingState, error, setError, refreshAuth, router } = useAuthState();
   const { control, handleSubmit } = useForm<AuthFormData>({ defaultValues });
 
   const login = async (data: AuthFormData) => {
@@ -25,8 +25,8 @@ export default function LoginForm() {
 
   return (
     <Form onSubmit={handleSubmit(login)}>
-      <Input label='Email' type='text' value={email} autoComplete='email' onChange={(e) => setEmail(e.target.value)} />
-      <Input label='Password' type='password' value={password} autoComplete='current-password' onChange={(e) => setPassword(e.target.value)} />
+      <FormElement name='email' label='Email' type='email' control={control} autoComplete='email' />
+      <FormElement name='password' label='Password' type='password' control={control} autoComplete='current-password' />
       <Button usage='Login' error={error} />
       <PageLink usage='signup' />
     </Form>
