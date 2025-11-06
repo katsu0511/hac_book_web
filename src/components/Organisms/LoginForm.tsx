@@ -6,6 +6,7 @@ import PageLink from '../Molecules/PageLink';
 import useAuthState from '@/lib/hooks/useAuthState';
 import { useForm } from 'react-hook-form';
 import { handleLogin } from '@/lib/api/auth';
+import Form from '@/components/Organisms/Form';
 
 const defaultValues = {
   email: '',
@@ -23,13 +24,11 @@ export default function LoginForm() {
   };
 
   return (
-    <div className='flex items-center w-full h-full'>
-      <form className='w-full' onSubmit={login}>
-        <Input label='Email' type='text' value={email} autoComplete='email' onChange={(e) => setEmail(e.target.value)} />
-        <Input label='Password' type='password' value={password} autoComplete='current-password' onChange={(e) => setPassword(e.target.value)} />
-        <Button usage='Login' error={error} />
-        <PageLink usage='signup' />
-      </form>
-    </div>
+    <Form onSubmit={handleSubmit(login)}>
+      <Input label='Email' type='text' value={email} autoComplete='email' onChange={(e) => setEmail(e.target.value)} />
+      <Input label='Password' type='password' value={password} autoComplete='current-password' onChange={(e) => setPassword(e.target.value)} />
+      <Button usage='Login' error={error} />
+      <PageLink usage='signup' />
+    </Form>
   );
 }
