@@ -1,12 +1,12 @@
 'use client';
 
-import Button from '../Molecules/Button';
 import PageLink from '../Molecules/PageLink';
 import useAuthState from '@/lib/hooks/useAuthState';
 import { useForm } from 'react-hook-form';
 import { handleLogin } from '@/lib/api/auth';
 import Form from '@/components/Organisms/Form';
 import FormElement from '../Molecules/FormElement';
+import SubmitButton from '../Molecules/SubmitButton';
 
 const defaultValues = {
   email: '',
@@ -27,7 +27,7 @@ export default function LoginForm() {
     <Form onSubmit={handleSubmit(login)}>
       <FormElement name='email' label='Email' type='email' control={control} autoComplete='email' />
       <FormElement name='password' label='Password' type='password' control={control} autoComplete='current-password' />
-      <Button usage='Login' error={error} />
+      <SubmitButton label='Login' error={error} loading={loadingState} />
       <PageLink usage='signup' />
     </Form>
   );
