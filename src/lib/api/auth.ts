@@ -1,19 +1,9 @@
+import { getAuth } from '@/lib/api/getters';
 import { login, signup } from '@/lib/api/actions';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
-export const getAuth = async (): Promise<boolean> => {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/check-auth`, {
-      method: 'GET',
-      credentials: 'include'
-    });
-    if (!res.ok) return false;
-    const json = await res.json();
-    return json.authenticated;
-  } catch (error) {
-    console.error('Auth check failed:', error);
-    return false;
-  }
+export const handleGetAuth = async (): Promise<boolean> => {
+  return await getAuth();
 }
 
 export const handleLogin = async (
