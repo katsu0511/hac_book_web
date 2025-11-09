@@ -1,5 +1,5 @@
 import { getAuth } from '@/lib/api/getters';
-import { login, signup } from '@/lib/api/actions';
+import { login, logout, signup } from '@/lib/api/actions';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 export const handleGetAuth = async (): Promise<boolean> => {
@@ -23,6 +23,21 @@ export const handleLogin = async (
 
   await refreshAuth();
   router.replace('/');
+}
+
+export const handleLogout = async (
+  refreshAuth: () => Promise<void>,
+  router: AppRouterInstance
+) => {
+  const res = await logout();
+
+  if (!res.ok) {
+    alert(res.error);
+    return;
+  };
+
+  await refreshAuth();
+  router.replace('/login');
 }
 
 export const handleSignup = async (
