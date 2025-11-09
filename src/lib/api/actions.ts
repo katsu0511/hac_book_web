@@ -23,6 +23,25 @@ export async function login(email: string, password: string): Promise<Result> {
   }
 }
 
+export async function logout(): Promise<Result> {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/logout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include'
+    });
+
+    if (!res.ok) return { ok: res.ok, error: 'Logout failed' };
+
+    return { ok: res.ok, response: res };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return { ok: false, error: message };
+  }
+}
+
 export async function signup(name: string, email: string, password: string) {
   try {
     return await fetch(`${process.env.NEXT_PUBLIC_API}/signup`, {
