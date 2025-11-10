@@ -1,6 +1,6 @@
 'use client';
 
-export async function login(email: string, password: string) : Promise<Result> {
+export async function login(email: string, password: string): Promise<Result> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/login`, {
       method: 'POST',
@@ -15,7 +15,7 @@ export async function login(email: string, password: string) : Promise<Result> {
       const json = await res.json();
       return { ok: res.ok, error: json.loginFailed };
     }
-    
+
     return { ok: res.ok, response: res };
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
@@ -23,9 +23,28 @@ export async function login(email: string, password: string) : Promise<Result> {
   }
 }
 
-export async function signup(name: string, email: string, password: string) {
+export async function logout(): Promise<Result> {
   try {
-    return await fetch(`${process.env.NEXT_PUBLIC_API}/signup`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/logout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include'
+    });
+
+    if (!res.ok) return { ok: res.ok, error: 'Logout failed' };
+
+    return { ok: res.ok, response: res };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return { ok: false, error: message };
+  }
+}
+
+export async function signup(name: string, email: string, password: string): Promise<Result> {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -33,8 +52,20 @@ export async function signup(name: string, email: string, password: string) {
       body: JSON.stringify({ name, email, password }),
       credentials: 'include'
     });
+
+    if (!res.ok) {
+      const json = await res.json();
+      let message = '';
+      if (json.email) message += json.email;
+      if (json.password) message += json.password;
+      if (json.signupFailed) message += json.signupFailed;
+      return { ok: res.ok, error: message };
+    }
+
+    return { ok: res.ok, response: res };
   } catch (error) {
-    return error instanceof Error ? error.message : 'unknown error';
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return { ok: false, error: message };
   }
 }
 

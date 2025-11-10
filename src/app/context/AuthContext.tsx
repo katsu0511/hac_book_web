@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { getAuth } from '@/lib/api/auth';
+import { handleGetAuth } from '@/lib/api/auth';
 
 type AuthContextType = {
   authenticated: boolean;
@@ -22,7 +22,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const refreshAuth = async () => {
     setLoading(true);
     try {
-      const result = await getAuth();
+      const result = await handleGetAuth();
       setAuthenticated(result);
     } catch(e) {
       console.log(e);
