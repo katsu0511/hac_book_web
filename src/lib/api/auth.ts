@@ -50,27 +50,18 @@ export const handleSignup = async (
   router: AppRouterInstance
 ) => {
   setError('');
-  if (!name || !email || !password || !passwordConfirm) {
-    setError('input your name, email and password');
-    return;
-  } else if (password !== passwordConfirm) {
+
+  if (password !== passwordConfirm) {
     setError('password doesn\'t match');
     return;
   }
 
   const res = await signup(name, email, password);
-  if (typeof res === 'string') {
-    setError(res);
+
+  if (!res.ok) {
+    setError(res.error);
     return;
   }
-  if (!res.ok) {
-    const json = await res.json();
-    let errors = '';
-    if (json.email) errors += json.email;
-    if (json.password) errors += `\n${json.password}`;
-    if (json.signupFailed) errors += `\n${json.signupFailed}`;
-    setError(errors);
-    return;
-  };
+
   handleLogin(email, password, setError, refreshAuth, router);
 }
