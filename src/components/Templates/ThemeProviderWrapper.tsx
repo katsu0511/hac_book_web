@@ -18,6 +18,9 @@ export default function ThemeProviderWrapper({ children }: { children: React.Rea
           root: {
             textTransform: 'none',
           },
+          containedPrimary: {
+            color: '#fff',
+          },
         },
       },
     },
