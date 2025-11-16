@@ -19,7 +19,20 @@ export default function Input({ field, label, type, autoComplete, fieldState }: 
       error={!!fieldState.error}
       helperText={fieldState.error?.message}
       variant='outlined'
-      fullWidth
+      sx={{
+        width: '300px',
+        margin: '0 auto',
+        '& .MuiOutlinedInput-root': {
+          '& fieldset': {
+            borderColor: 'primary.main',
+          },
+          '&:hover fieldset': {
+            borderColor: 'primary.main',
+            borderWidth: 2,
+            transition: 'all 0.1s',
+          },
+        },
+      }}
     />
   );
 }

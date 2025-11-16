@@ -63,5 +63,6 @@ export const handleSignup = async (
     return;
   }
 
-  handleLogin(email, password, setError, refreshAuth, router);
+  await refreshAuth();
+  router.replace('/');
 }

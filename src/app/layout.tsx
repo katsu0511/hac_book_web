@@ -2,6 +2,7 @@ import './globals.css';
 import { Inconsolata } from 'next/font/google';
 import type { Metadata } from 'next';
 import { AuthProvider } from './context/AuthContext';
+import ThemeProviderWrapper from '@/components/Templates/ThemeProviderWrapper';
 import Header from '@/components/Organisms/Header';
 import Footer from '@/components/Organisms/Footer';
 import Main from '@/components/Templates/Main';
@@ -18,9 +19,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang='en' suppressHydrationWarning>
       <body className={fnt.className}>
         <AuthProvider>
-          <Header />
-          <Main>{children}</Main>
-          <Footer />
+          <ThemeProviderWrapper>
+            <Header />
+            <Main>{children}</Main>
+            <Footer />
+          </ThemeProviderWrapper>
         </AuthProvider>
       </body>
     </html>
