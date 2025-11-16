@@ -1,19 +1,6 @@
-'use client';
-
-import { useAuth } from './context/AuthContext';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import Link from 'next/link';
 
 export default function Home() {
-  const { authenticated, loading } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (loading) return;
-    if (!authenticated) router.replace('/login');
-  }, [authenticated, loading, router]);
-
   return (
     <div>
       <h2>Hello World!</h2>
