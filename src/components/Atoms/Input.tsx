@@ -23,8 +23,8 @@ export default function Input({ field, label, type, autoComplete, fieldState }: 
         width: '300px',
         margin: '0 auto',
         '& .MuiOutlinedInput-root': {
+          backgroundColor: 'white',
           '& fieldset': {
-            backgroundColor: 'white',
             borderColor: 'primary.main',
           },
           '&:hover fieldset': {
