@@ -5,7 +5,7 @@ import { useAuth } from '@/app/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 import Link from 'next/link';
-import { getMyCategories } from '@/lib/api/getters';
+import { getCategories } from '@/lib/api/getters';
 import CategoryDisplay from '@/components/Atoms/CategoryDisplay';
 
 export default function Categories() {
@@ -20,7 +20,7 @@ export default function Categories() {
   }, [authenticated, loading, router]);
 
   const category = useCallback(async () => {
-    const categories = await getMyCategories();
+    const categories = await getCategories();
     if (categories === undefined) return;
     else if (categories === null) router.replace('/');
     else {
