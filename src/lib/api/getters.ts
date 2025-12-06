@@ -40,7 +40,7 @@ export async function getCategory(id: string): Promise<Category | null | undefin
   }
 }
 
-export async function getMyCategories(): Promise<MyCategories | null | undefined> {
+export async function getCategories(): Promise<Categories | null | undefined> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/categories`, {
       method: 'GET',
@@ -52,7 +52,7 @@ export async function getMyCategories(): Promise<MyCategories | null | undefined
 
     if (!res.ok) return null;
 
-    const categories: MyCategories = await res.json();
+    const categories: Categories = await res.json();
     return categories;
   } catch (error) {
     console.log(error instanceof Error ? error.message : 'unknown error');
