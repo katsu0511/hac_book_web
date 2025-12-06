@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useCallback, useEffect } from 'react';
 import { useForm, FieldErrors, Controller } from 'react-hook-form';
 import { FormControl, InputLabel, Select, MenuItem, TextField, Button, FormHelperText } from '@mui/material';
-import { getMyCategories } from '@/lib/api/getters';
+import { getCategories } from '@/lib/api/getters';
 import { addTransaction } from '@/lib/api/actions';
 
 const defaultValues = {
@@ -34,7 +34,7 @@ export default function AddTransaction() {
   }, [authenticated, loading, router]);
 
   const category = useCallback(async () => {
-    const categories = await getMyCategories();
+    const categories = await getCategories();
     if (categories === undefined) return;
     else if (categories === null) router.replace('/');
     else {
