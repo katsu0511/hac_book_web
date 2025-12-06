@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useMemo, useState, useCallback, useEffect } from 'react';
 import { useForm, FieldErrors, Controller } from 'react-hook-form';
 import { FormControl, InputLabel, Select, MenuItem, TextField, Button } from '@mui/material';
-import { getMyCategories, getTransaction } from '@/lib/api/getters';
+import { getCategories, getTransaction } from '@/lib/api/getters';
 import { modifyTransaction } from '@/lib/api/actions';
 
 export default function ModifyTransaction() {
@@ -49,7 +49,7 @@ export default function ModifyTransaction() {
   }, [authenticated, loading, router]);
 
   const category = useCallback(async () => {
-    const categories = await getMyCategories();
+    const categories = await getCategories();
     if (categories === undefined) return;
     else if (categories === null) router.replace('/');
     else {
