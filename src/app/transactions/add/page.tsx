@@ -1,12 +1,11 @@
 'use client';
 
-import { useAuth } from '@/app/context/AuthContext';
-import { useRouter } from 'next/navigation';
 import { useState, useCallback, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm, FieldErrors, Controller } from 'react-hook-form';
-import { FormControl, InputLabel, Select, MenuItem, TextField, Button, FormHelperText } from '@mui/material';
-import { getCategories } from '@/lib/api/getters';
 import { addTransaction } from '@/lib/api/actions';
+import { getCategories } from '@/lib/api/getters';
+import { FormControl, InputLabel, Select, MenuItem, ListSubheader, TextField, FormHelperText, Button } from '@mui/material';
 
 const defaultValues = {
   categoryId: '',
@@ -19,7 +18,7 @@ const defaultValues = {
 export default function AddTransaction() {
   const [expenses, setExpenses] = useState<Category[]>([]);
   const [incomes, setIncomes] = useState<Category[]>([]);
-  const { authenticated, loading } = useAuth();
+
   const router = useRouter();
   const { control, handleSubmit, formState: { errors } } = useForm<TransactionFormData>({ defaultValues });
   const onsubmit = async (data: TransactionFormData) => {
@@ -27,11 +26,6 @@ export default function AddTransaction() {
     console.log(transaction);
   };
   const onerror = (err: FieldErrors<TransactionFormData>) => console.log(err);
-
-  useEffect(() => {
-    if (loading) return;
-    if (!authenticated) router.replace('/login');
-  }, [authenticated, loading, router]);
 
   const category = useCallback(async () => {
     const categories = await getCategories();
@@ -61,11 +55,13 @@ export default function AddTransaction() {
             }}
             render={({ field }) => (
               <Select {...field} labelId='categoryId' label='Category'>
+                <ListSubheader key='expense'>Expense</ListSubheader>,
                 {expenses.map(expense => (
-                  <MenuItem key={expense.id} value={expense.id}>{`(${(expense.type as string).substring(0, 1)}${(expense.type as string).substring(1).toLocaleLowerCase()}) ${expense.name}`}</MenuItem>
+                  <MenuItem key={expense.id} value={expense.id}>{expense.name}</MenuItem>
                 ))}
+                <ListSubheader key='income'>Income</ListSubheader>,
                 {incomes.map(income => (
-                  <MenuItem key={income.id} value={income.id}>{`(${(income.type as string).substring(0, 1)}${(income.type as string).substring(1).toLocaleLowerCase()}) ${income.name}`}</MenuItem>
+                  <MenuItem key={income.id} value={income.id}>{income.name}</MenuItem>
                 ))}
               </Select>
             )}
