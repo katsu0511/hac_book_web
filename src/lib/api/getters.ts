@@ -60,7 +60,7 @@ export async function getCategories(): Promise<Categories | null | undefined> {
   }
 }
 
-export async function getParentCategories(): Promise<Category[] | null | undefined> {
+export async function getParentCategories(): Promise<Categories | null | undefined> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/parent-categories`, {
       method: 'GET',
@@ -72,7 +72,7 @@ export async function getParentCategories(): Promise<Category[] | null | undefin
 
     if (!res.ok) return null;
 
-    const parentCategories: Category[] = await res.json();
+    const parentCategories: Categories = await res.json();
     return parentCategories;
   } catch (error) {
     console.log(error instanceof Error ? error.message : 'unknown error');
