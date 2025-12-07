@@ -13,6 +13,11 @@ type Categories = {
   income: Category[]
 };
 
+type CategoryForEdit = {
+  category: Category
+  categories: Categories
+}
+
 type CategoryFormData = {
   id: string
   parentId: string
