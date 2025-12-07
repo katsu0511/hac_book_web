@@ -40,6 +40,26 @@ export async function getCategory(id: string): Promise<Category | null | undefin
   }
 }
 
+export async function getCategoryForEdit(id: string): Promise<CategoryForEdit | null | undefined> {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/categories/${id}/edit`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include'
+    });
+
+    if (!res.ok) return null;
+
+    const categoryForEdit: CategoryForEdit = await res.json();
+    return categoryForEdit;
+  } catch (error) {
+    console.log(error instanceof Error ? error.message : 'unknown error');
+    return;
+  }
+}
+
 export async function getCategories(): Promise<Categories | null | undefined> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/categories`, {
