@@ -120,6 +120,26 @@ export async function getTransaction(id: string): Promise<Transaction | null | u
   }
 }
 
+export async function getTransactionForEdit(id: string): Promise<TransactionForEdit | null | undefined> {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/transactions/${id}/edit`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include'
+    });
+
+    if (!res.ok) return null;
+
+    const transactionForEdit: TransactionForEdit = await res.json();
+    return transactionForEdit;
+  } catch (error) {
+    console.log(error instanceof Error ? error.message : 'unknown error');
+    return;
+  }
+}
+
 export async function getTransactions(): Promise<Transaction[] | null | undefined> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/transactions`, {
