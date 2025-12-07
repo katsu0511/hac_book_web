@@ -1,5 +1,7 @@
 'use client';
 
+import Summary from '@/types/summary';
+
 export async function getAuth(): Promise<boolean> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/check-auth`, {
@@ -157,5 +159,30 @@ export async function getTransactions(): Promise<Transaction[] | null | undefine
   } catch (error) {
     console.log(error instanceof Error ? error.message : 'unknown error');
     return;
+  }
+}
+
+export async function getSummary(start?: string, end?: string): Promise<Summary | null> {
+  try {
+    const params = new URLSearchParams();
+    if (start) params.append('start', start);
+    if (end) params.append('end', end);
+    const queryString = params.toString();
+    const parameter = queryString ? `?${queryString}` : '';
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/dashboard/summary${parameter}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include'
+    });
+
+    if (!res.ok) return null;
+
+    const summary: Summary = await res.json();
+    return summary;
+  } catch (error) {
+    console.log(error instanceof Error ? error.message : 'unknown error');
+    return null;
   }
 }
