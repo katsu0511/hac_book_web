@@ -1,71 +1,67 @@
 'use client';
 
+import { useState, useCallback, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { useAuth } from '@/app/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { useMemo, useState, useCallback, useEffect } from 'react';
 import { useForm, FieldErrors, Controller } from 'react-hook-form';
-import { FormControl, InputLabel, Select, MenuItem, TextField, Button, FormHelperText } from '@mui/material';
-import { getCategory, getParentCategories } from '@/lib/api/getters';
+import { getCategoryForEdit } from '@/lib/api/getters';
 import { modifyCategory } from '@/lib/api/actions';
+import { FormControl, InputLabel, Select, MenuItem, ListSubheader, TextField, FormHelperText, Button } from '@mui/material';
+
+const defaultValues: CategoryFormData = {
+  id: '',
+  parentId: '',
+  name: '',
+  type: '',
+  description: ''
+};
 
 export default function ModifyCategory() {
+  const [expenses, setExpenses] = useState<Category[]>([]);
+  const [incomes, setIncomes] = useState<Category[]>([]);
+  const [loadingData, setLoadingData] = useState(true);
+
   const params = useParams();
   const id = params?.id;
-  const defaultValues = useMemo(() => ({
-    id: '',
-    parentId: '',
-    name: '',
-    type: '',
-    description: ''
-  }), []);
-  const [parentCategories, setParentCategories] = useState<Category[]>([]);
-  const [modifiedCategory, setModifiedCategory] = useState<Category>();
-  const { authenticated, loading } = useAuth();
   const router = useRouter();
-  const { control, handleSubmit, formState: { errors }, setValue } = useForm<CategoryFormData>({ defaultValues });
+
+  const { control, handleSubmit, formState: { errors }, reset } = useForm<CategoryFormData>({ defaultValues });
+
+  const fetchCategoryForEdit = useCallback(async () => {
+    const categoryForEdit = await getCategoryForEdit(id as string);
+    if (categoryForEdit === undefined) return;
+    else if (categoryForEdit === null) router.replace('/');
+    else {
+      reset({
+        id: categoryForEdit.category.id,
+        parentId: categoryForEdit.category.parentId,
+        name: categoryForEdit.category.name,
+        type: categoryForEdit.category.type,
+        description: categoryForEdit.category.description
+      });
+      setExpenses(categoryForEdit.categories.expense);
+      setIncomes(categoryForEdit.categories.income);
+    }
+  }, [id, router, reset]);
+
+  const loadData = useCallback(async () => {
+    setLoadingData(true);
+    await fetchCategoryForEdit();
+    setLoadingData(false);
+  }, [fetchCategoryForEdit]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
   const onsubmit = async (data: CategoryFormData) => {
     const message = await modifyCategory(data);
     console.log(message);
   };
+
   const onerror = (err: FieldErrors<CategoryFormData>) => console.log(err);
 
-  useEffect(() => {
-    if (modifiedCategory) {
-      setValue('id', modifiedCategory.id);
-      setValue('parentId', modifiedCategory.parentId ?? defaultValues.id);
-      setValue('name', modifiedCategory.name);
-      setValue('type', modifiedCategory.type);
-      setValue('description', modifiedCategory.description ?? defaultValues.description);
-    }
-  }, [modifiedCategory, setValue, defaultValues]);
-
-  useEffect(() => {
-    if (loading) return;
-    if (!authenticated) router.replace('/login');
-  }, [authenticated, loading, router]);
-
-  const parentCategory = useCallback(async () => {
-    const categories = await getParentCategories();
-    if (categories === undefined) return;
-    else if (categories === null) router.replace('/');
-    else setParentCategories(categories);
-  }, [router]);
-
-  useEffect(() => {
-    parentCategory();
-  }, [parentCategory]);
-
-  const category = useCallback(async () => {
-    const category = await getCategory(id as string);
-    if (category === undefined) return;
-    else if (category === null) router.replace('/');
-    else setModifiedCategory(category);
-  }, [id, router]);
-
-  useEffect(() => {
-    if (id) category();
-  }, [id, category]);
+  if (loadingData) return <div>Loading...</div>;
 
   return (
     <div>
@@ -77,12 +73,15 @@ export default function ModifyCategory() {
             name='parentId'
             control={control}
             render={({ field }) => (
-              <Select {...field} labelId='parentId' label='Parent Category'>
+              <Select {...field} value={field.value ?? ''} labelId='parentId' label='Parent Category'>
                 <MenuItem value=''>-</MenuItem>
-                {parentCategories.map(category => (
-                  <MenuItem key={category.id} value={category.id}>
-                    {`(${(category.type as string).substring(0, 1)}${(category.type as string).substring(1).toLocaleLowerCase()}) ${category.name}`}
-                  </MenuItem>
+                <ListSubheader key='expense'>Expense</ListSubheader>,
+                {expenses.map(expense => (
+                  <MenuItem key={expense.id} value={expense.id}>{expense.name}</MenuItem>
+                ))}
+                <ListSubheader key='income'>Income</ListSubheader>,
+                {incomes.map(income => (
+                  <MenuItem key={income.id} value={income.id}>{income.name}</MenuItem>
                 ))}
               </Select>
             )}
