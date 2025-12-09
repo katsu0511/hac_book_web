@@ -1,6 +1,6 @@
 export default interface Summary {
-  income: string
-  expense: string
-  incomeBreakdown: Record<string, string>
-  expenseBreakdown: Record<string, string>
+  income: number
+  expense: number
+  incomeBreakdown: Record<string, number>
+  expenseBreakdown: Record<string, number>
 }
