@@ -10,6 +10,11 @@ type Transaction = {
   updatedAt: string
 };
 
+type TransactionForEdit = {
+  transaction: Transaction
+  categories: Categories
+}
+
 type TransactionFormData = {
   id: string
   categoryId: string

@@ -1,77 +1,67 @@
 'use client';
 
+import { useState, useCallback, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { useAuth } from '@/app/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { useMemo, useState, useCallback, useEffect } from 'react';
 import { useForm, FieldErrors, Controller } from 'react-hook-form';
-import { FormControl, InputLabel, Select, MenuItem, TextField, Button } from '@mui/material';
-import { getMyCategories, getTransaction } from '@/lib/api/getters';
+import { getTransactionForEdit } from '@/lib/api/getters';
 import { modifyTransaction } from '@/lib/api/actions';
+import { FormControl, InputLabel, Select, MenuItem, ListSubheader, TextField, Button } from '@mui/material';
+
+const defaultValues: TransactionFormData = {
+  id: '',
+  categoryId: '',
+  amount: '',
+  currency: 'CAD',
+  description: '',
+  transactionDate: ''
+};
 
 export default function ModifyTransaction() {
-  const params = useParams();
-  const id = params?.id;
-  const defaultValues = useMemo(() => ({
-    id: '',
-    categoryId: '',
-    amount: '',
-    currency: 'CAD',
-    description: '',
-    transactionDate: ''
-  }), []);
   const [expenses, setExpenses] = useState<Category[]>([]);
   const [incomes, setIncomes] = useState<Category[]>([]);
-  const [modifiedTransaction, setModifiedTransaction] = useState<Transaction>();
-  const { authenticated, loading } = useAuth();
+  const [loadingData, setLoadingData] = useState(true);
+
+  const params = useParams();
+  const id = params?.id;
   const router = useRouter();
-  const { control, handleSubmit, formState: { errors }, setValue } = useForm<TransactionFormData>({ defaultValues });
+
+  const { control, handleSubmit, formState: { errors }, reset } = useForm<TransactionFormData>({ defaultValues });
+
+  const fetchTransactionForEdit = useCallback(async () => {
+    const transactionForEdit = await getTransactionForEdit(id as string);
+    if (transactionForEdit === undefined) return;
+    else if (transactionForEdit === null) return router.replace('/');
+    reset({
+      id: transactionForEdit.transaction.id,
+      categoryId: transactionForEdit.transaction.categoryId,
+      amount: transactionForEdit.transaction.amount,
+      currency: transactionForEdit.transaction.currency,
+      description: transactionForEdit.transaction.description ?? '',
+      transactionDate: transactionForEdit.transaction.transactionDate
+    });
+    setExpenses(transactionForEdit.categories.expense);
+    setIncomes(transactionForEdit.categories.income);
+  }, [id, router, reset]);
+
+  const loadData = useCallback(async () => {
+    setLoadingData(true);
+    await fetchTransactionForEdit();
+    setLoadingData(false);
+  }, [fetchTransactionForEdit]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
   const onsubmit = async (data: TransactionFormData) => {
     const transaction = await modifyTransaction(data);
     console.log(transaction);
   };
+
   const onerror = (err: FieldErrors<TransactionFormData>) => console.log(err);
 
-  useEffect(() => {
-    if (modifiedTransaction) {
-      setValue('id', modifiedTransaction.id);
-      setValue('categoryId', modifiedTransaction.categoryId);
-      setValue('amount', modifiedTransaction.amount);
-      setValue('currency', modifiedTransaction.currency);
-      setValue('description', modifiedTransaction.description ?? defaultValues.description);
-      setValue('transactionDate', modifiedTransaction.transactionDate);
-    }
-  }, [modifiedTransaction, setValue, defaultValues]);
-
-  useEffect(() => {
-    if (loading) return;
-    if (!authenticated) router.replace('/login');
-  }, [authenticated, loading, router]);
-
-  const category = useCallback(async () => {
-    const categories = await getMyCategories();
-    if (categories === undefined) return;
-    else if (categories === null) router.replace('/');
-    else {
-      if (categories.expense) setExpenses(categories.expense);
-      if (categories.income) setIncomes(categories.income);
-    }
-  }, [router]);
-
-  useEffect(() => {
-    category();
-  }, [category]);
-
-  const transaction = useCallback(async () => {
-      const transaction = await getTransaction(id as string);
-      if (transaction === undefined) return;
-      else if (transaction === null) router.replace('/');
-      else setModifiedTransaction(transaction);
-    }, [id, router]);
-
-    useEffect(() => {
-      if (id) transaction();
-    }, [id, transaction]);
+  if (loadingData) return <div>Loading...</div>;
 
   return (
     <div>
@@ -83,12 +73,14 @@ export default function ModifyTransaction() {
             name='categoryId'
             control={control}
             render={({ field }) => (
-              <Select {...field} labelId='categoryId' label='Category'>
+              <Select {...field} value={field.value ?? ''} labelId='categoryId' label='Category'>
+                <ListSubheader key='expense'>Expense</ListSubheader>,
                 {expenses.map(expense => (
-                  <MenuItem key={expense.id} value={expense.id}>{`(${(expense.type as string).substring(0, 1)}${(expense.type as string).substring(1).toLocaleLowerCase()}) ${expense.name}`}</MenuItem>
+                  <MenuItem key={expense.id} value={expense.id}>{expense.name}</MenuItem>
                 ))}
+                <ListSubheader key='income'>Income</ListSubheader>,
                 {incomes.map(income => (
-                  <MenuItem key={income.id} value={income.id}>{`(${(income.type as string).substring(0, 1)}${(income.type as string).substring(1).toLocaleLowerCase()}) ${income.name}`}</MenuItem>
+                  <MenuItem key={income.id} value={income.id}>{income.name}</MenuItem>
                 ))}
               </Select>
             )}

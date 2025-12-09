@@ -1,12 +1,11 @@
 'use client';
 
-import { useAuth } from '@/app/context/AuthContext';
-import { useRouter } from 'next/navigation';
 import { useState, useCallback, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm, FieldErrors, Controller } from 'react-hook-form';
-import { FormControl, InputLabel, Select, MenuItem, TextField, Button, FormHelperText } from '@mui/material';
-import { getParentCategories } from '@/lib/api/getters';
 import { addCategory } from '@/lib/api/actions';
+import { getParentCategories } from '@/lib/api/getters';
+import { FormControl, InputLabel, Select, MenuItem, ListSubheader, TextField, FormHelperText, Button } from '@mui/material';
 
 const defaultValues = {
   parentId: '',
@@ -16,8 +15,9 @@ const defaultValues = {
 };
 
 export default function AddCategory() {
-  const [parentCategories, setParentCategories] = useState<Category[]>([]);
-  const { authenticated, loading } = useAuth();
+  const [expenses, setExpenses] = useState<Category[]>([]);
+  const [incomes, setIncomes] = useState<Category[]>([]);
+
   const router = useRouter();
   const { control, handleSubmit, formState: { errors } } = useForm<CategoryFormData>({ defaultValues });
   const onsubmit = async (data: CategoryFormData) => {
@@ -26,17 +26,13 @@ export default function AddCategory() {
   };
   const onerror = (err: FieldErrors<CategoryFormData>) => console.log(err);
 
-  useEffect(() => {
-    if (loading) return;
-    if (!authenticated) router.replace('/login');
-  }, [authenticated, loading, router]);
-
   const parentCategory = useCallback(async () => {
     const categories = await getParentCategories();
     if (categories === undefined) return;
     else if (categories === null) router.replace('/');
     else {
-      setParentCategories(categories);
+      setExpenses(categories.expense);
+      setIncomes(categories.income);
     }
   }, [router]);
 
@@ -56,8 +52,13 @@ export default function AddCategory() {
             render={({ field }) => (
               <Select {...field} labelId='parentId' label='Parent Category'>
                 <MenuItem value=''>-</MenuItem>
-                {parentCategories.map(category => (
-                  <MenuItem key={category.id} value={category.id}>{`(${(category.type as string).substring(0, 1)}${(category.type as string).substring(1).toLocaleLowerCase()}) ${category.name}`}</MenuItem>
+                <ListSubheader key='expense'>Expense</ListSubheader>,
+                {expenses.map(expense => (
+                  <MenuItem key={expense.id} value={expense.id}>{expense.name}</MenuItem>
+                ))}
+                <ListSubheader key='income'>Income</ListSubheader>,
+                {incomes.map(income => (
+                  <MenuItem key={income.id} value={income.id}>{income.name}</MenuItem>
                 ))}
               </Select>
             )}

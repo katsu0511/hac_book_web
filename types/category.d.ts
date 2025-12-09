@@ -8,10 +8,15 @@ type Category = {
   active: boolean
 };
 
-type MyCategories = {
+type Categories = {
   expense: Category[]
   income: Category[]
 };
+
+type CategoryForEdit = {
+  category: Category
+  categories: Categories
+}
 
 type CategoryFormData = {
   id: string

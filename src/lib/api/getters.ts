@@ -1,5 +1,7 @@
 'use client';
 
+import Summary from '@/types/summary';
+
 export async function getAuth(): Promise<boolean> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/check-auth`, {
@@ -40,7 +42,27 @@ export async function getCategory(id: string): Promise<Category | null | undefin
   }
 }
 
-export async function getMyCategories(): Promise<MyCategories | null | undefined> {
+export async function getCategoryForEdit(id: string): Promise<CategoryForEdit | null | undefined> {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/categories/${id}/edit`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include'
+    });
+
+    if (!res.ok) return null;
+
+    const categoryForEdit: CategoryForEdit = await res.json();
+    return categoryForEdit;
+  } catch (error) {
+    console.log(error instanceof Error ? error.message : 'unknown error');
+    return;
+  }
+}
+
+export async function getCategories(): Promise<Categories | null | undefined> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/categories`, {
       method: 'GET',
@@ -52,7 +74,7 @@ export async function getMyCategories(): Promise<MyCategories | null | undefined
 
     if (!res.ok) return null;
 
-    const categories: MyCategories = await res.json();
+    const categories: Categories = await res.json();
     return categories;
   } catch (error) {
     console.log(error instanceof Error ? error.message : 'unknown error');
@@ -60,7 +82,7 @@ export async function getMyCategories(): Promise<MyCategories | null | undefined
   }
 }
 
-export async function getParentCategories(): Promise<Category[] | null | undefined> {
+export async function getParentCategories(): Promise<Categories | null | undefined> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/parent-categories`, {
       method: 'GET',
@@ -72,7 +94,7 @@ export async function getParentCategories(): Promise<Category[] | null | undefin
 
     if (!res.ok) return null;
 
-    const parentCategories: Category[] = await res.json();
+    const parentCategories: Categories = await res.json();
     return parentCategories;
   } catch (error) {
     console.log(error instanceof Error ? error.message : 'unknown error');
@@ -100,6 +122,26 @@ export async function getTransaction(id: string): Promise<Transaction | null | u
   }
 }
 
+export async function getTransactionForEdit(id: string): Promise<TransactionForEdit | null | undefined> {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/transactions/${id}/edit`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include'
+    });
+
+    if (!res.ok) return null;
+
+    const transactionForEdit: TransactionForEdit = await res.json();
+    return transactionForEdit;
+  } catch (error) {
+    console.log(error instanceof Error ? error.message : 'unknown error');
+    return;
+  }
+}
+
 export async function getTransactions(): Promise<Transaction[] | null | undefined> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/transactions`, {
@@ -117,5 +159,30 @@ export async function getTransactions(): Promise<Transaction[] | null | undefine
   } catch (error) {
     console.log(error instanceof Error ? error.message : 'unknown error');
     return;
+  }
+}
+
+export async function getSummary(start?: string, end?: string): Promise<Summary | null> {
+  try {
+    const params = new URLSearchParams();
+    if (start) params.append('start', start);
+    if (end) params.append('end', end);
+    const queryString = params.toString();
+    const parameter = queryString ? `?${queryString}` : '';
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/dashboard/summary${parameter}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include'
+    });
+
+    if (!res.ok) return null;
+
+    const summary: Summary = await res.json();
+    return summary;
+  } catch (error) {
+    console.log(error instanceof Error ? error.message : 'unknown error');
+    return null;
   }
 }

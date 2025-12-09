@@ -24,11 +24,11 @@ export default function Header() {
       <div className='flex justify-between w-full h-full md:max-w-screen-md xl:max-w-screen-xl px-4 mx-auto'>
         {authenticated
           ? <Link href='/' className='flex text-[color:var(--color-primary)] text-3xl font-bold leading-10 duration-300 hover:opacity-60'>
-              <Image src="/books.png" alt="Books" width={40} height={40} />
+              <Image src="/books.png" width={40} height={39} alt="Books" />
               <p className={`${satisfy.className} ml-4`}>Hac Book</p>
             </Link>
           : <h1 className='flex text-[color:var(--color-primary)] text-3xl font-bold leading-10'>
-              <Image src="/books.png" alt="Books" width={40} height={40} />
+              <Image src="/books.png" width={40} height={39} alt="Books" />
               <p className={`${satisfy.className} ml-4`}>Hac Book</p>
             </h1>
         }
