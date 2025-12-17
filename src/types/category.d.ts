@@ -1,3 +1,5 @@
+import { CategoryType } from '@/constants/CategoryType';
+
 type Category = {
   id: string
   userId: string
