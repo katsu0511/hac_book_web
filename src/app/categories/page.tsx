@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Category } from '@/types/category';
 import { useAuth } from '@/app/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect } from 'react';

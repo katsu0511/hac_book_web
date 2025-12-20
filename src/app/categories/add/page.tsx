@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
+import { Category, CategoryFormData } from '@/types/category';
 import { useRouter } from 'next/navigation';
 import { useForm, FieldErrors, Controller } from 'react-hook-form';
 import { addCategory } from '@/lib/api/actions';
