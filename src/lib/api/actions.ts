@@ -1,5 +1,7 @@
 'use client';
 
+import { CategoryFormData } from "@/types/category";
+
 export async function login(email: string, password: string): Promise<Result> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/login`, {

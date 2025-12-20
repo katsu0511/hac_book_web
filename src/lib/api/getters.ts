@@ -1,5 +1,6 @@
 'use client';
 
+import { Categories, Category, CategoryForEdit } from '@/types/category';
 import Summary from '@/types/summary';
 
 export async function getAuth(): Promise<boolean> {
