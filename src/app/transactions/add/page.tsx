@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
+import { Category } from '@/types/category';
 import { useRouter } from 'next/navigation';
 import { useForm, FieldErrors, Controller } from 'react-hook-form';
 import { addTransaction } from '@/lib/api/actions';

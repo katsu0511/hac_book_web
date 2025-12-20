@@ -1,5 +1,6 @@
 'use client';
 
+import { CategoryFormData, Category } from '@/types/category';
 import { useState, useCallback, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';

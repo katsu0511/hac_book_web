@@ -1,3 +1,4 @@
+import { Category } from '@/types/category';
 import Link from 'next/link';
 
 export default function CategoryDisplay({category}: {category: Category}) {
