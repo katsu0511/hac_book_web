@@ -9,3 +9,7 @@ export const getCurrentMonth = (): Month => {
 export const getFirstDayOfCurrentMonth = (): Dayjs => {
   return dayjs().startOf('month');
 }
+
+export const getToday = (): Dayjs => {
+  return dayjs();
+}
