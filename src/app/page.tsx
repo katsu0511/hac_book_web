@@ -3,5 +3,5 @@
 import Dashboard from '@/components/Organisms/Dashboard';
 
 export default function Home() {
-  return Dashboard();
+  return <Dashboard />;
 }
