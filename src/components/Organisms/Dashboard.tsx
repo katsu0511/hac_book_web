@@ -4,7 +4,7 @@ import { getCurrentMonth } from '@/lib/domain/month';
 import { Dayjs } from 'dayjs';
 import { useState, useCallback, useEffect } from 'react';
 import { getSummary } from '@/lib/api/getters';
-import Title from '@/components/Molecules/Title';
+import TitleLine from '@/components/Molecules/TitleLine';
 import Date from '@/components/Atoms/Date';
 import DoughnutGraph from '@/components/Molecules/DoughnutGraph';
 
@@ -41,7 +41,7 @@ export default function Dashboard({ start, end, setStart, setEnd }: Props) {
 
   return (
     <div className='w-full h-full'>
-      <Title start={startStr} end={endStr} />
+      <TitleLine start={startStr} end={endStr} />
       {
         start && end && setStart && setEnd &&
         <div className='w-160 mx-auto mb-10'>
