@@ -32,7 +32,7 @@ export default function SignupForm() {
       <FormElement name='password' label='Password' type='password' control={control} autoComplete='current-password' />
       <FormElement name='passwordConfirm' label='Password Confirmation' type='password' control={control} autoComplete='new-password' />
       <SubmitButton label='Signup' error={error} loading={loadingState} />
-      <LinkElement page='login' />
+      <LinkElement page='login' display='Login' />
     </Form>
   );
 }

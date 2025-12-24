@@ -28,7 +28,7 @@ export default function LoginForm() {
       <FormElement name='email' label='Email' type='email' control={control} autoComplete='email' />
       <FormElement name='password' label='Password' type='password' control={control} autoComplete='current-password' />
       <SubmitButton label='Login' error={error} loading={loadingState} />
-      <LinkElement page='signup' />
+      <LinkElement page='signup' display='Signup' />
     </Form>
   );
 }
