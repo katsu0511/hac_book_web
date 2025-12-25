@@ -10,7 +10,7 @@ type FormElementProps = {
   control: Control<AuthFormData>
 };
 
-export default function FormElement({ name, label, type, control, autoComplete }: FormElementProps) {
+export default function AuthFormElement({ name, label, type, control, autoComplete }: FormElementProps) {
   return (
     <FormControl fullWidth margin='normal'>
       <Controller
