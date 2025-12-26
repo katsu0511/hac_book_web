@@ -19,6 +19,7 @@ export default function ParentCategorySelect({ errors, control, expenses, income
         render={({ field }) => (
           <Select
             {...field}
+            value={field.value ?? ''}
             labelId='parentId'
             label='Parent Category'
             sx={{
