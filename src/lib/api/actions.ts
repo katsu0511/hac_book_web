@@ -71,7 +71,7 @@ export async function signup(name: string, email: string, password: string): Pro
   }
 }
 
-export async function addCategory(data: CategoryFormData) {
+export async function addCategory(data: CategoryFormData): Promise<Result> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/categories`, {
       method: 'POST',
@@ -82,16 +82,16 @@ export async function addCategory(data: CategoryFormData) {
       credentials: 'include'
     });
 
-    if (!res.ok) return 'failed to add category';
+    if (!res.ok) return { ok: res.ok, error: 'failed to add category' };
 
-    const json = await res.json();
-    return json.category;
+    return { ok: res.ok, response: res };
   } catch (error) {
-    return error instanceof Error ? error.message : 'unknown error';
+    const message = error instanceof Error ? error.message : 'unknown error';
+    return { ok: false, error: message };
   }
 }
 
-export async function modifyCategory(data: CategoryFormData) {
+export async function modifyCategory(data: CategoryFormData): Promise<Result> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/categories/${data.id}`, {
       method: 'PUT',
@@ -102,12 +102,12 @@ export async function modifyCategory(data: CategoryFormData) {
       credentials: 'include'
     });
 
-    if (!res.ok) return 'failed to modify category';
+    if (!res.ok) return { ok: res.ok, error: 'failed to modify category' };
 
-    const json = await res.json();
-    return json.category;
+    return { ok: res.ok, response: res };
   } catch (error) {
-    return error instanceof Error ? error.message : 'unknown error';
+    const message = error instanceof Error ? error.message : 'unknown error';
+    return { ok: false, error: message };
   }
 }
 
