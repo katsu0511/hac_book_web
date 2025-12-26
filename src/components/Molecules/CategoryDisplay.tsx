@@ -2,7 +2,7 @@ import { Category } from '@/types/category';
 import Link from 'next/link';
 
 export default function CategoryDisplay({category}: {category: Category}) {
-  const width = category.userId ? 'w-[calc(100%-40px)]' : 'w-full';
+  const width = category.parentId ? 'w-[calc(100%-40px)]' : 'w-full';
 
   return (
     <div key={category.id} className={`flex justify-between bg-[color:var(--color-primary)] ${width} text-white font-bold h-12 rounded-sm px-2 mb-1`}>
