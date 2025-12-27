@@ -6,7 +6,11 @@ export default function CategoryDisplay({category}: {category: Category}) {
 
   return (
     <div key={category.id} className={`flex justify-between bg-[color:var(--color-primary)] ${width} text-white font-bold h-12 rounded-sm px-2 mb-1`}>
-      <Link href={`/categories/${category.id}`} className='text-xl leading-12 duration-300 hover:opacity-60'>{category.name}</Link>
+      {
+        category.userId
+        ? <Link href={`/categories/${category.id}`} className='text-xl leading-12 duration-300 hover:opacity-60'>{category.name}</Link>
+        : <div className='text-xl leading-12'>{`${category.name} (Default)`}</div>
+      }
       {
         category.userId &&
         <Link
