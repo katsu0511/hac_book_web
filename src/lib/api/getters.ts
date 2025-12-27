@@ -1,6 +1,6 @@
 'use client';
 
-import { Categories, Category, CategoryForEdit } from '@/types/category';
+import { Categories, CategoryForEdit } from '@/types/category';
 import Summary from '@/types/summary';
 
 export async function getAuth(): Promise<boolean> {
@@ -23,7 +23,7 @@ export async function getAuth(): Promise<boolean> {
   }
 }
 
-export async function getCategory(id: string): Promise<Category | null | undefined> {
+export async function getCategory(id: string): Promise<Result> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/categories/${id}`, {
       method: 'GET',
@@ -33,13 +33,12 @@ export async function getCategory(id: string): Promise<Category | null | undefin
       credentials: 'include'
     });
 
-    if (!res.ok) return null;
+    if (!res.ok) return { ok: res.ok, error: 'failed to get category' };
 
-    const category: Category = await res.json();
-    return category;
+    return { ok: res.ok, response: res };
   } catch (error) {
-    console.log(error instanceof Error ? error.message : 'unknown error');
-    return;
+    const message = error instanceof Error ? error.message : 'unknown error';
+    return { ok: false, error: message };
   }
 }
 
