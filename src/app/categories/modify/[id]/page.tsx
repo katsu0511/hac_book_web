@@ -3,11 +3,17 @@
 import { CategoryFormData, Category } from '@/types/category';
 import { useState, useCallback, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { useRouter } from 'next/navigation';
-import { useForm, FieldErrors, Controller } from 'react-hook-form';
+import useAuthState from '@/lib/hooks/useAuthState';
+import { useForm, FieldErrors } from 'react-hook-form';
 import { getCategoryForEdit } from '@/lib/api/getters';
 import { modifyCategory } from '@/lib/api/actions';
-import { FormControl, InputLabel, Select, MenuItem, ListSubheader, TextField, FormHelperText, Button } from '@mui/material';
+import FormTitle from '@/components/Molecules/FormTitle';
+import Form from '@/components/Organisms/Form';
+import ParentCategorySelect from '@/components/Molecules/ParentCategorySelect';
+import NameFormElement from '@/components/Molecules/NameFormElement';
+import TypeSelect from '@/components/Molecules/TypeSelect';
+import DescriptionFormElement from '@/components/Molecules/DescriptionFormElement';
+import SubmitButton from '@/components/Molecules/SubmitButton';
 
 const defaultValues: CategoryFormData = {
   id: '',
@@ -24,8 +30,8 @@ export default function ModifyCategory() {
 
   const params = useParams();
   const id = params?.id;
-  const router = useRouter();
 
+  const { loadingState, setLoadingState, error, setError, router } = useAuthState();
   const { control, handleSubmit, formState: { errors }, reset } = useForm<CategoryFormData>({ defaultValues });
 
   const fetchCategoryForEdit = useCallback(async () => {
@@ -56,8 +62,11 @@ export default function ModifyCategory() {
   }, [loadData]);
 
   const onsubmit = async (data: CategoryFormData) => {
-    const message = await modifyCategory(data);
-    console.log(message);
+    setLoadingState(true);
+    const res = await modifyCategory(data);
+    if (res.ok) router.replace('/categories');
+    else setError(res.error);
+    setLoadingState(false);
   };
 
   const onerror = (err: FieldErrors<CategoryFormData>) => console.log(err);
@@ -66,91 +75,14 @@ export default function ModifyCategory() {
 
   return (
     <div>
-      <h2>Modify Category</h2>
-      <form onSubmit={handleSubmit(onsubmit, onerror)} noValidate>
-        <FormControl fullWidth error={!!errors.parentId}>
-          <InputLabel id='parentId'>Parent Category</InputLabel>
-          <Controller
-            name='parentId'
-            control={control}
-            render={({ field }) => (
-              <Select {...field} value={field.value ?? ''} labelId='parentId' label='Parent Category'>
-                <MenuItem value=''>-</MenuItem>
-                <ListSubheader key='expense'>Expense</ListSubheader>,
-                {expenses.map(expense => (
-                  <MenuItem key={expense.id} value={expense.id}>{expense.name}</MenuItem>
-                ))}
-                <ListSubheader key='income'>Income</ListSubheader>,
-                {incomes.map(income => (
-                  <MenuItem key={income.id} value={income.id}>{income.name}</MenuItem>
-                ))}
-              </Select>
-            )}
-          />
-        </FormControl>
-        <FormControl fullWidth error={!!errors.name}>
-          <Controller
-            name='name'
-            control={control}
-            rules={{
-              required: 'name is required',
-              maxLength: {
-                value: 100,
-                message: 'within 100 letters'
-              }
-            }}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label='Name'
-                margin='normal'
-                error={'name' in errors}
-                helperText={errors.name?.message}
-              />
-            )}
-          />
-        </FormControl>
-        <FormControl fullWidth error={!!errors.type}>
-          <InputLabel id='type'>Type</InputLabel>
-          <Controller
-            name='type'
-            control={control}
-            rules={{ required: 'type is required' }}
-            render={({ field }) => (
-              <Select {...field} labelId='type' label='Type'>
-                <MenuItem key='expense' value='EXPENSE'>Expense</MenuItem>
-                <MenuItem key='income' value='INCOME'>Income</MenuItem>
-              </Select>
-            )}
-          />
-          <FormHelperText error={'type' in errors}>{errors.type?.message}</FormHelperText>
-        </FormControl>
-        <FormControl fullWidth error={!!errors.description}>
-          <Controller
-            name='description'
-            control={control}
-            rules={{
-              maxLength: {
-                value: 200,
-                message: 'within 200 letters'
-              }
-            }}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label='Description'
-                multiline
-                margin='normal'
-                error={'description' in errors}
-                helperText={errors.description?.message}
-              />
-            )}
-          />
-        </FormControl>
-        <div>
-          <Button variant='contained' type='submit'>Submit</Button>
-        </div>
-      </form>
+      <FormTitle title='Modify Category' link='categories' linkDisplay='Categories' />
+      <Form onSubmit={handleSubmit(onsubmit, onerror)}>
+        <ParentCategorySelect errors={errors} control={control} expenses={expenses} incomes={incomes} />
+        <NameFormElement control={control} />
+        <TypeSelect errors={errors} control={control} />
+        <DescriptionFormElement control={control} />
+        <SubmitButton label='Submit' error={error} loading={loadingState} />
+      </Form>
     </div>
   );
 }
