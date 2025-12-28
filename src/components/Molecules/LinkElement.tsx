@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import PageLink from '@/components/Atoms/PageLink';
 
-export default function LinkElement(props: { page: string }) {
+export default function LinkElement({page, display}: { page: string, display: string }) {
   return (
     <Box
       sx={{
@@ -10,7 +10,7 @@ export default function LinkElement(props: { page: string }) {
         mt: '40px'
       }}
     >
-      <PageLink page={props.page} />
+      <PageLink page={page} display={display} />
     </Box>
   );
 }

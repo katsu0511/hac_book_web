@@ -20,6 +20,11 @@ type CategoryForEdit = {
   categories: Categories
 }
 
+type CategoryDetail = {
+  category: Category
+  parent: string
+}
+
 type CategoryFormData = {
   id: string
   parentId: string

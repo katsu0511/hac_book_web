@@ -1,8 +1,9 @@
 import { ControllerRenderProps, ControllerFieldState } from 'react-hook-form';
 import { TextField } from '@mui/material';
+import { CategoryFormData } from '@/types/category';
 
 type InputProps = {
-  field: ControllerRenderProps<AuthFormData, keyof AuthFormData>
+  field: ControllerRenderProps<AuthFormData, keyof AuthFormData> | ControllerRenderProps<CategoryFormData, keyof CategoryFormData>
   label: string
   type: React.InputHTMLAttributes<HTMLInputElement>['type']
   autoComplete: string

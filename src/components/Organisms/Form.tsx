@@ -8,7 +8,17 @@ type FormProps = {
 
 export default function Form({ children, onSubmit }: FormProps) {
   return (
-    <Box width='100%' component='form' onSubmit={onSubmit}>
+    <Box
+      width='100%'
+      component='form'
+      onSubmit={onSubmit}
+      noValidate
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
       {children}
     </Box>
   );
