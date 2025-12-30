@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation';
 import { getCategory } from '@/lib/api/getters';
 import FormTitle from '@/components/Molecules/FormTitle';
 import Row from '@/components/Atoms/Row';
-import Link from 'next/link';
+import DetailButtons from '@/components/Molecules/DetailButtons';
 
 export default function CategoryDetails() {
   const [category, setCategory] = useState<Category>();
@@ -48,12 +48,7 @@ export default function CategoryDetails() {
         <Row head='Type' body={category?.type === 'EXPENSE' ? 'Expense' : 'Income'} />
         <Row head='Description' body={category?.description ?? ''} />
       </div>
-      <Link
-        href={`/categories/modify/${category?.id}`}
-        className='block bg-[color:var(--color-primary)] text-white text-l w-20 h-8 text-center leading-8 rounded-sm border border-solid border-[color:var(--color-primary)] mx-auto my-10 duration-300 hover:bg-white hover:text-[color:var(--color-primary)]'
-      >
-        Edit
-      </Link>
+      <DetailButtons id={category?.id} link='categories' />
     </div>
   );
 }
