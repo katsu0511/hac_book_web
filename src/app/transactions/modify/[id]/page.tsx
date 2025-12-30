@@ -3,11 +3,17 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Category } from '@/types/category';
 import { useParams } from 'next/navigation';
-import { useRouter } from 'next/navigation';
-import { useForm, FieldErrors, Controller } from 'react-hook-form';
+import useAuthState from '@/lib/hooks/useAuthState';
+import { useForm, FieldErrors } from 'react-hook-form';
 import { getTransactionForEdit } from '@/lib/api/getters';
 import { modifyTransaction } from '@/lib/api/actions';
-import { FormControl, InputLabel, Select, MenuItem, ListSubheader, TextField, Button } from '@mui/material';
+import FormTitle from '@/components/Molecules/FormTitle';
+import Form from '@/components/Organisms/Form';
+import CategorySelect from '@/components/Molecules/CategorySelect';
+import AmountFormElement from '@/components/Molecules/AmountFormElement';
+import DescriptionFormElement from '@/components/Molecules/DescriptionFormElement';
+import TransactionDate from '@/components/Molecules/TransactionDate';
+import SubmitButton from '@/components/Molecules/SubmitButton';
 
 const defaultValues: TransactionFormData = {
   id: '',
@@ -25,8 +31,8 @@ export default function ModifyTransaction() {
 
   const params = useParams();
   const id = params?.id;
-  const router = useRouter();
 
+  const { loadingState, setLoadingState, error, setError, router } = useAuthState();
   const { control, handleSubmit, formState: { errors }, reset } = useForm<TransactionFormData>({ defaultValues });
 
   const fetchTransactionForEdit = useCallback(async () => {
@@ -56,8 +62,11 @@ export default function ModifyTransaction() {
   }, [loadData]);
 
   const onsubmit = async (data: TransactionFormData) => {
-    const transaction = await modifyTransaction(data);
-    console.log(transaction);
+    setLoadingState(true);
+    const res = await modifyTransaction(data);
+    if (res.ok) router.replace('/transactions');
+    else setError(res.error);
+    setLoadingState(false);
   };
 
   const onerror = (err: FieldErrors<TransactionFormData>) => console.log(err);
@@ -65,103 +74,15 @@ export default function ModifyTransaction() {
   if (loadingData) return <div>Loading...</div>;
 
   return (
-    <div>
-      <h2>Modify Transaction</h2>
-      <form onSubmit={handleSubmit(onsubmit, onerror)} noValidate>
-        <FormControl fullWidth error={!!errors.categoryId}>
-          <InputLabel id='categoryId'>Category</InputLabel>
-          <Controller
-            name='categoryId'
-            control={control}
-            render={({ field }) => (
-              <Select {...field} value={field.value ?? ''} labelId='categoryId' label='Category'>
-                <ListSubheader key='expense'>Expense</ListSubheader>,
-                {expenses.map(expense => (
-                  <MenuItem key={expense.id} value={expense.id}>{expense.name}</MenuItem>
-                ))}
-                <ListSubheader key='income'>Income</ListSubheader>,
-                {incomes.map(income => (
-                  <MenuItem key={income.id} value={income.id}>{income.name}</MenuItem>
-                ))}
-              </Select>
-            )}
-          />
-        </FormControl>
-        <FormControl fullWidth error={!!errors.amount}>
-          <Controller
-            name='amount'
-            control={control}
-            rules={{
-              required: 'amount is required',
-              pattern: {
-                value: /^\d+(\.\d{1,2})?$/,
-                message: 'Enter a valid amount with up to 2 decimal places'
-              }
-            }}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                type='number'
-                label='Amount'
-                margin='normal'
-                slotProps={{
-                  htmlInput: {
-                    step: '0.01',
-                    min: '0'
-                  }
-                }}
-                error={!!errors.amount}
-                helperText={errors.amount?.message}
-              />
-            )}
-          />
-        </FormControl>
-        <FormControl fullWidth error={!!errors.description}>
-          <Controller
-            name='description'
-            control={control}
-            rules={{
-              maxLength: {
-                value: 200,
-                message: 'within 200 letters'
-              }
-            }}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label='Description'
-                multiline
-                margin='normal'
-                error={!!errors.description}
-                helperText={errors.description?.message}
-              />
-            )}
-          />
-        </FormControl>
-        <FormControl fullWidth error={!!errors.transactionDate}>
-          <Controller
-            name='transactionDate'
-            control={control}
-            rules={{
-              required: 'transaction date is required'
-            }}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                type='date'
-                label='Transaction Date'
-                slotProps={{inputLabel: { shrink: true} }}
-                margin='normal'
-                error={!!errors.transactionDate}
-                helperText={errors.transactionDate?.message}
-              />
-            )}
-          />
-        </FormControl>
-        <div>
-          <Button variant='contained' type='submit'>Submit</Button>
-        </div>
-      </form>
-    </div>
+    <>
+      <FormTitle title='Modify Transaction' link='transactions' linkDisplay='Transactions' />
+      <Form onSubmit={handleSubmit(onsubmit, onerror)}>
+        <CategorySelect errors={errors} control={control} expenses={expenses} incomes={incomes} />
+        <AmountFormElement errors={errors} control={control} />
+        <DescriptionFormElement control={control} />
+        <TransactionDate errors={errors} control={control} />
+        <SubmitButton label='Submit' error={error} loading={loadingState} />
+      </Form>
+    </>
   );
 }
