@@ -1,16 +1,15 @@
-import { ControllerRenderProps, ControllerFieldState } from 'react-hook-form';
+import { ControllerRenderProps, ControllerFieldState, FieldValues, Path } from 'react-hook-form';
 import { TextField } from '@mui/material';
-import { CategoryFormData } from '@/types/category';
 
-type InputProps = {
-  field: ControllerRenderProps<AuthFormData, keyof AuthFormData> | ControllerRenderProps<CategoryFormData, keyof CategoryFormData>
+type InputProps<T extends FieldValues> = {
+  field: ControllerRenderProps<T, Path<T>>;
   label: string
   type: React.InputHTMLAttributes<HTMLInputElement>['type']
   autoComplete: string
   fieldState: ControllerFieldState
 };
 
-export default function Input({ field, label, type, autoComplete, fieldState }: InputProps) {
+export default function Input<T extends FieldValues>({ field, label, type, autoComplete, fieldState }: InputProps<T>) {
   return (
     <TextField
       {...field}
