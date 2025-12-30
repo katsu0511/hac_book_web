@@ -22,7 +22,7 @@ export default function CategoryDetails() {
     else {
       const res: CategoryDetail = await result.response.json();
       setCategory(res.category);
-      setParent(res.parent);
+      setParent(res.parentName);
     }
   }, [id]);
 
