@@ -1,6 +1,5 @@
 'use client';
 
-import { getCurrentMonth } from '@/lib/domain/month';
 import { Dayjs } from 'dayjs';
 import { useState, useCallback, useEffect } from 'react';
 import { getSummary } from '@/lib/api/getters';
@@ -8,16 +7,15 @@ import TitleLine from '@/components/Molecules/TitleLine';
 import Date from '@/components/Atoms/Date';
 import DoughnutGraph from '@/components/Molecules/DoughnutGraph';
 
-const month = getCurrentMonth();
-
 type Props = {
+  month?: string
   start?: Dayjs
   end?: Dayjs
   setStart?: (newValue: Dayjs) => void
   setEnd?: (newValue: Dayjs) => void
 };
 
-export default function Dashboard({ start, end, setStart, setEnd }: Props) {
+export default function Dashboard({ month, start, end, setStart, setEnd }: Props) {
   const [income, setIncome] = useState<number>(0);
   const [expense, setExpense] = useState<number>(0);
   const [expenseBreakdown, setExpenseBreakdown] = useState<Record<string, number>>({});
@@ -41,7 +39,7 @@ export default function Dashboard({ start, end, setStart, setEnd }: Props) {
 
   return (
     <div className='w-full h-full'>
-      <TitleLine start={startStr} end={endStr} />
+      <TitleLine title='Income and Expense' month={month} start={startStr} end={endStr} />
       {
         start && end && setStart && setEnd &&
         <div className='w-160 mx-auto mb-10'>
@@ -52,11 +50,11 @@ export default function Dashboard({ start, end, setStart, setEnd }: Props) {
       <div className='flex justify-center items-center'>
         <div className='w-1/2 text-xl'>
           <div className='flex items-center py-3'>
-            <h3 className='w-60'>Income in {month}:</h3>
+            <h3 className='w-60'>Income:</h3>
             <p>${income}</p>
           </div>
           <div className='flex items-center py-3'>
-            <h3 className='w-60'>Expense in {month}:</h3>
+            <h3 className='w-60'>Expense:</h3>
             <p>${expense}</p>
           </div>
           <div className='flex items-center py-3'>
