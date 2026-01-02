@@ -10,7 +10,7 @@ import DetailButtons from '@/components/Molecules/DetailButtons';
 
 export default function CategoryDetails() {
   const [category, setCategory] = useState<Category>();
-  const [parent, setParent] = useState<string>('');
+  const [parent, setParent] = useState<string>();
   const [loadingData, setLoadingData] = useState(true);
 
   const params = useParams();
@@ -42,8 +42,8 @@ export default function CategoryDetails() {
     <div>
       <FormTitle title='Category Details' link='categories' linkDisplay='Categories' />
       <div className='w-full h-full md:max-w-screen-md mx-auto'>
-        <div className='bg-[color:var(--color-primary)] text-white font-bold w-full h-10 text-center leading-10'>{parent === '' ? 'Parent Category' : 'Child Category'}</div>
-        { parent !== '' && <Row head='Parent' body={parent} /> }
+        <div className='bg-[color:var(--color-primary)] text-white font-bold w-full h-10 text-center leading-10'>{parent ? 'Child Category' : 'Parent Category'}</div>
+        { parent && <Row head='Parent' body={parent} /> }
         <Row head='Name' body={category?.name ?? ''} />
         <Row head='Type' body={category?.type === 'EXPENSE' ? 'Expense' : 'Income'} />
         <Row head='Description' body={category?.description ?? ''} />
