@@ -1,23 +1,25 @@
 'use client';
 
+import { getCurrentMonth } from '@/lib/domain/month';
 import { useState } from 'react';
-import { useAuth } from '@/app/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@mui/material';
 import { getTransactions } from '@/lib/api/getters';
 import { deleteTransaction } from '@/lib/api/actions';
+import TitleLine from '@/components/Molecules/TitleLine';
+import LinkElement from '@/components/Molecules/LinkElement';
+import Toast from '@/components/Molecules/Toast';
+
+const month = getCurrentMonth();
 
 export default function Transactions() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const { authenticated, loading } = useAuth();
+  const [id, setId] = useState<string>();
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const router = useRouter();
-
-  useEffect(() => {
-    if (loading) return;
-    if (!authenticated) router.replace('/login');
-  }, [authenticated, loading, router]);
 
   const transaction = useCallback(async () => {
     const transactions = await getTransactions();
@@ -30,27 +32,48 @@ export default function Transactions() {
     transaction();
   }, [transaction]);
 
-  const onDelete = async(id: string) => {
+  const onOpenDialog = (id: string) => {
+    setId(id);
+    setDialogOpen(true);
+  };
+
+  const onMoveToEdit = (id: string) => {
+    router.replace(`/transactions/modify/${id}`);
+  };
+
+  const onDelete = async(id?: string) => {
+    if (!id) return;
     const deleted = await deleteTransaction(id);
-    if (deleted) setTransactions(prev => prev.filter(t => t.id !== id));
+    if (deleted) {
+      setSnackbarOpen(true);
+      setTransactions(prev => prev.filter(t => t.id !== id));
+      setDialogOpen(false);
+    }
   };
 
   return (
-    <div>
-      <h2>Transaction</h2>
+    <div className='pb-10'>
+      <TitleLine title='Transactions' month={month} />
+      <div className='flex border-b-2 border-black-500 w-full h-10 leading-10 pl-3'>
+        <p className='w-40'>Category</p>
+        <p className='w-40'>Amount</p>
+        <p className='w-40'>Date</p>
+      </div>
       {transactions.map(transaction => (
-        <div key={transaction.id} className='border-4 border-blue-500'>
-          <p>Category: {transaction.categoryId}</p>
-          <Link href={`/transactions/modify/${transaction.id}`} className='bg-green-200'>{transaction.currency} {transaction.amount}</Link>
-          <p>Description: {transaction.description}</p>
-          <p>Transaction Date: {transaction.transactionDate}</p>
-          <Button
-            variant='contained'
-            onClick={() => onDelete(transaction.id)}
-          >Delete</Button>
+        <div key={transaction.id} className='flex justify-between h-15 border-b border-black-500'>
+          <Link href={`/transactions/${transaction.id}`} className='flex h-5 leading-5 pl-3 my-5 transition-all duration-300 hover:opacity-60'>
+            <p className='w-40'>{transaction.categoryName}</p>
+            <p className='w-40'>${transaction.amount}</p>
+            <p className='w-40'>{transaction.transactionDate}</p>
+          </Link>
+          <div className='flex gap-2 px-3'>
+            <Button variant='contained' onClick={() => onMoveToEdit(transaction.id)} sx={{ width: 80, height: 40, my: '10px' }}>Edit</Button>
+            <Button variant='contained' color='error' onClick={() => onOpenDialog(transaction.id)} sx={{ width: 80, height: 40, my: '10px' }}>Delete</Button>
+          </div>
         </div>
       ))}
-      <Link href={'/transactions/add'} >Add Transaction</Link>
+      <LinkElement page='transactions/add' display='Add Transaction' />
+      <Toast id={id} dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} snackbarOpen={snackbarOpen} setSnackbarOpen={setSnackbarOpen} onDelete={onDelete} />
     </div>
   );
 }
