@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import useAuthState from '@/lib/hooks/useAuthState';
 import { deleteTransaction } from '@/lib/api/actions';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert } from '@mui/material';
+import { Button } from '@mui/material';
+import Toast from '@/components/Molecules/Toast';
 
 export default function DetailButtons({id, link}: {id?: string, link: string}) {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -31,17 +32,7 @@ export default function DetailButtons({id, link}: {id?: string, link: string}) {
         <Button variant='contained' onClick={() => onMoveToEdit(id)} sx={{ width: 80 }}>Edit</Button>
         {link === 'transactions' && <Button variant='contained' color='error' onClick={() => setDialogOpen(true)} sx={{ width: 80 }}>Delete</Button>}
       </div>
-      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
-        <DialogTitle>Delete Confirmation</DialogTitle>
-        <DialogContent>Are you sure to delete?<br /><strong>This operation cannot be reverted.</strong></DialogContent>
-        <DialogActions>
-          <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
-          <Button color="error" onClick={() => onDelete(id)}>Delete</Button>
-        </DialogActions>
-      </Dialog>
-      <Snackbar open={snackbarOpen} autoHideDuration={2000} onClose={() => setSnackbarOpen(false)}>
-        <Alert severity="success" variant="filled">Successfully deleted</Alert>
-      </Snackbar>
+      <Toast id={id} dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} snackbarOpen={snackbarOpen} setSnackbarOpen={setSnackbarOpen} onDelete={onDelete} />
     </>
   );
 }
