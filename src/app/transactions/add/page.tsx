@@ -2,11 +2,17 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { Category } from '@/types/category';
-import { useRouter } from 'next/navigation';
-import { useForm, FieldErrors, Controller } from 'react-hook-form';
-import { addTransaction } from '@/lib/api/actions';
+import useAuthState from '@/lib/hooks/useAuthState';
+import { useForm, FieldErrors } from 'react-hook-form';
 import { getCategories } from '@/lib/api/getters';
-import { FormControl, InputLabel, Select, MenuItem, ListSubheader, TextField, FormHelperText, Button } from '@mui/material';
+import { addTransaction } from '@/lib/api/actions';
+import FormTitle from '@/components/Molecules/FormTitle';
+import Form from '@/components/Organisms/Form';
+import CategorySelect from '@/components/Molecules/CategorySelect';
+import AmountFormElement from '@/components/Molecules/AmountFormElement';
+import DescriptionFormElement from '@/components/Molecules/DescriptionFormElement';
+import TransactionDate from '@/components/Molecules/TransactionDate';
+import SubmitButton from '@/components/Molecules/SubmitButton';
 
 const defaultValues = {
   categoryId: '',
@@ -19,131 +25,53 @@ const defaultValues = {
 export default function AddTransaction() {
   const [expenses, setExpenses] = useState<Category[]>([]);
   const [incomes, setIncomes] = useState<Category[]>([]);
+  const [loadingData, setLoadingData] = useState(true);
 
-  const router = useRouter();
+  const { loadingState, setLoadingState, error, setError, router } = useAuthState();
   const { control, handleSubmit, formState: { errors } } = useForm<TransactionFormData>({ defaultValues });
-  const onsubmit = async (data: TransactionFormData) => {
-    const transaction = await addTransaction(data);
-    console.log(transaction);
-  };
-  const onerror = (err: FieldErrors<TransactionFormData>) => console.log(err);
 
-  const category = useCallback(async () => {
+  const fetchCategory = useCallback(async () => {
     const categories = await getCategories();
     if (categories === undefined) return;
     else if (categories === null) router.replace('/');
     else {
-      if (categories.expense) setExpenses(categories.expense);
-      if (categories.income) setIncomes(categories.income);
+      setExpenses(categories.expense);
+      setIncomes(categories.income);
     }
   }, [router]);
 
+  const loadData = useCallback(async () => {
+    setLoadingData(true);
+    await fetchCategory();
+    setLoadingData(false);
+  }, [fetchCategory]);
+
   useEffect(() => {
-    category();
-  }, [category]);
+    loadData();
+  }, [loadData]);
+
+  const onsubmit = async (data: TransactionFormData) => {
+    setLoadingState(true);
+    const res = await addTransaction(data);
+    if (res.ok) router.replace('/transactions');
+    else setError(res.error);
+    setLoadingState(false);
+  };
+
+  const onerror = (err: FieldErrors<TransactionFormData>) => console.log(err);
+
+  if (loadingData) return <div>Loading...</div>;
 
   return (
-    <div>
-      <h2>Add Transaction</h2>
-      <form onSubmit={handleSubmit(onsubmit, onerror)} noValidate>
-        <FormControl fullWidth error={!!errors.categoryId}>
-          <InputLabel id='categoryId'>Category</InputLabel>
-          <Controller
-            name='categoryId'
-            control={control}
-            rules={{
-              required: 'category is required'
-            }}
-            render={({ field }) => (
-              <Select {...field} labelId='categoryId' label='Category'>
-                <ListSubheader key='expense'>Expense</ListSubheader>,
-                {expenses.map(expense => (
-                  <MenuItem key={expense.id} value={expense.id}>{expense.name}</MenuItem>
-                ))}
-                <ListSubheader key='income'>Income</ListSubheader>,
-                {incomes.map(income => (
-                  <MenuItem key={income.id} value={income.id}>{income.name}</MenuItem>
-                ))}
-              </Select>
-            )}
-          />
-          <FormHelperText error={'categoryId' in errors}>{errors.categoryId?.message}</FormHelperText>
-        </FormControl>
-        <FormControl fullWidth error={!!errors.amount}>
-          <Controller
-            name='amount'
-            control={control}
-            rules={{
-              required: 'amount is required',
-              pattern: {
-                value: /^\d+(\.\d{1,2})?$/,
-                message: 'Enter a valid amount with up to 2 decimal places'
-              }
-            }}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                type='number'
-                label='Amount'
-                margin='normal'
-                slotProps={{
-                  htmlInput: {
-                    step: '0.01',
-                    min: '0'
-                  }
-                }}
-                error={!!errors.amount}
-                helperText={errors.amount?.message}
-              />
-            )}
-          />
-        </FormControl>
-        <FormControl fullWidth error={!!errors.description}>
-          <Controller
-            name='description'
-            control={control}
-            rules={{
-              maxLength: {
-                value: 200,
-                message: 'within 200 letters'
-              }
-            }}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label='Description'
-                multiline
-                margin='normal'
-                error={!!errors.description}
-                helperText={errors.description?.message}
-              />
-            )}
-          />
-        </FormControl>
-        <FormControl fullWidth error={!!errors.transactionDate}>
-          <Controller
-            name='transactionDate'
-            control={control}
-            rules={{
-              required: 'transaction date is required'
-            }}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                type='date'
-                label='Transaction Date'
-                slotProps={{inputLabel: { shrink: true} }}
-                margin='normal'
-                error={!!errors.transactionDate}
-                helperText={errors.transactionDate?.message}
-              />
-            )}
-          />
-        </FormControl>
-        <div>
-          <Button variant='contained' type='submit'>Submit</Button>
-        </div>
-      </form>
-    </div>
+    <>
+      <FormTitle title='Add Transaction' link='transactions' linkDisplay='Transactions' />
+      <Form onSubmit={handleSubmit(onsubmit, onerror)}>
+        <CategorySelect errors={errors} control={control} expenses={expenses} incomes={incomes} />
+        <AmountFormElement errors={errors} control={control} />
+        <DescriptionFormElement control={control} />
+        <TransactionDate errors={errors} control={control} />
+        <SubmitButton label='Submit' error={error} loading={loadingState} />
+      </Form>
+    </>
   );
 }

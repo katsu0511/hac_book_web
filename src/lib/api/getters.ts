@@ -102,7 +102,7 @@ export async function getParentCategories(): Promise<Categories | null | undefin
   }
 }
 
-export async function getTransaction(id: string): Promise<Transaction | null | undefined> {
+export async function getTransaction(id: string): Promise<Result> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/transactions/${id}`, {
       method: 'GET',
@@ -112,13 +112,12 @@ export async function getTransaction(id: string): Promise<Transaction | null | u
       credentials: 'include'
     });
 
-    if (!res.ok) return null;
+    if (!res.ok) return { ok: res.ok, error: 'failed to get transaction' };
 
-    const transaction: Transaction = await res.json();
-    return transaction;
+    return { ok: res.ok, response: res };
   } catch (error) {
-    console.log(error instanceof Error ? error.message : 'unknown error');
-    return;
+    const message = error instanceof Error ? error.message : 'unknown error';
+    return { ok: false, error: message };
   }
 }
 

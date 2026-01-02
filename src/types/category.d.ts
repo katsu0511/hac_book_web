@@ -22,7 +22,7 @@ type CategoryForEdit = {
 
 type CategoryDetail = {
   category: Category
-  parent: string
+  parentName: string
 }
 
 type CategoryFormData = {

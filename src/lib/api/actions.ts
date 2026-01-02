@@ -111,7 +111,7 @@ export async function modifyCategory(data: CategoryFormData): Promise<Result> {
   }
 }
 
-export async function addTransaction(data: TransactionFormData) {
+export async function addTransaction(data: TransactionFormData): Promise<Result> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/transactions`, {
       method: 'POST',
@@ -122,16 +122,16 @@ export async function addTransaction(data: TransactionFormData) {
       credentials: 'include'
     });
 
-    if (!res.ok) return 'failed to add transaction';
+    if (!res.ok) return { ok: res.ok, error: 'failed to add transaction' };
 
-    const transaction = await res.json();
-    return transaction;
+    return { ok: res.ok, response: res };
   } catch (error) {
-    return error instanceof Error ? error.message : 'unknown error';
+    const message = error instanceof Error ? error.message : 'unknown error';
+    return { ok: false, error: message };
   }
 }
 
-export async function modifyTransaction(data: TransactionFormData) {
+export async function modifyTransaction(data: TransactionFormData): Promise<Result> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/transactions/${data.id}`, {
       method: 'PUT',
@@ -142,12 +142,12 @@ export async function modifyTransaction(data: TransactionFormData) {
       credentials: 'include'
     });
 
-    if (!res.ok) return 'failed to modify transaction';
+    if (!res.ok) return { ok: res.ok, error: 'failed to modify transaction' };
 
-    const transaction = await res.json();
-    return transaction;
+    return { ok: res.ok, response: res };
   } catch (error) {
-    return error instanceof Error ? error.message : 'unknown error';
+    const message = error instanceof Error ? error.message : 'unknown error';
+    return { ok: false, error: message };
   }
 }
 
