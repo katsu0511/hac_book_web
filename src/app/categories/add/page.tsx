@@ -63,7 +63,7 @@ export default function AddCategory() {
 
   return (
     <>
-      <FormTitle title='Add Category' link='categories' linkDisplay='Categories' />
+      <FormTitle title='Add Category' />
       <Form onSubmit={handleSubmit(onsubmit, onerror)}>
         <ParentCategorySelect errors={errors} control={control} expenses={expenses} incomes={incomes} />
         <NameFormElement control={control} />
