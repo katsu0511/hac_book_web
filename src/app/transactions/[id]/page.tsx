@@ -37,7 +37,7 @@ export default function TransactionDetails() {
 
   return (
     <div>
-      <FormTitle title='Transaction Details' link='transactions' linkDisplay='Transactions' />
+      <FormTitle title='Transaction Details' />
       <div className='w-full h-full md:max-w-screen-md mx-auto'>
         <Row head='Category' body={transaction?.categoryName ?? ''} />
         <Row head='Amount' body={`$${transaction?.amount}`} />
