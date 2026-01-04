@@ -75,7 +75,7 @@ export default function ModifyCategory() {
 
   return (
     <div>
-      <FormTitle title='Modify Category' link='categories' linkDisplay='Categories' />
+      <FormTitle title='Modify Category' />
       <Form onSubmit={handleSubmit(onsubmit, onerror)}>
         <ParentCategorySelect errors={errors} control={control} expenses={expenses} incomes={incomes} />
         <NameFormElement control={control} />
