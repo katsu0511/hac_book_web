@@ -75,7 +75,7 @@ export default function ModifyTransaction() {
 
   return (
     <>
-      <FormTitle title='Modify Transaction' link='transactions' linkDisplay='Transactions' />
+      <FormTitle title='Modify Transaction' />
       <Form onSubmit={handleSubmit(onsubmit, onerror)}>
         <CategorySelect errors={errors} control={control} expenses={expenses} incomes={incomes} />
         <AmountFormElement errors={errors} control={control} />
