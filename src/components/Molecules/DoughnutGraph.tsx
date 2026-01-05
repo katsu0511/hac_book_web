@@ -34,7 +34,7 @@ export default function DoughnutGraph(props: { expenses: Record<string, number> 
   };
 
   return (
-    <div className='w-1/2'>
+    <div className='w-full order-2 mb-10 xl:w-1/2 xl:mb-0'>
       <div className='w-full'>
         <Doughnut data={data} options={options} />
       </div>
