@@ -7,7 +7,8 @@ export default function LinkElement({page, display}: { page: string, display: st
       sx={{
         display: 'flex',
         justifyContent: 'center',
-        mt: '40px'
+        mt: '40px',
+        mb: '16px'
       }}
     >
       <PageLink page={page} display={display} />
