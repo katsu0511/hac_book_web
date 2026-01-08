@@ -11,7 +11,16 @@ type Props = {
 
 export default function ParentCategorySelect({ errors, control, expenses, incomes }: Props) {
   return (
-    <FormControl margin='normal' error={!!errors.parentId} sx={{ width: 300 }}>
+    <FormControl
+      margin='normal'
+      error={!!errors.parentId}
+      sx={{
+        width: '100%',
+        '@media (min-width:350px)': {
+          width: 300,
+        },
+      }}
+    >
       <InputLabel id='parentId'>Parent Category</InputLabel>
       <Controller
         name='parentId'
