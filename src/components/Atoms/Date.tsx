@@ -29,8 +29,14 @@ export default function Date({label, date, onChange, minDate, maxDate}: Props) {
             fullWidth: true,
             sx: {
               backgroundColor: 'white',
-              width: '300px',
-              margin: '0 10px',
+              width: '100%',
+              mx: 0,
+              mb: 3,
+              '@media (min-width:768px)': {
+                width: '300px',
+                mx: '10px',
+                mb: 0,
+              },
               '& fieldset': {
                 borderColor: 'primary.main',
               },

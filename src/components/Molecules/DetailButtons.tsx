@@ -28,7 +28,7 @@ export default function DetailButtons({id, link}: {id?: string, link: string}) {
 
   return (
     <>
-      <div className='flex justify-center gap-4 my-10'>
+      <div className='flex justify-center gap-4 py-10'>
         <Button variant='contained' onClick={() => onMoveToEdit(id)} sx={{ width: 80 }}>Edit</Button>
         {link === 'transactions' && <Button variant='contained' color='error' onClick={() => setDialogOpen(true)} sx={{ width: 80 }}>Delete</Button>}
       </div>

@@ -64,7 +64,7 @@ export default function AddTransaction() {
 
   return (
     <>
-      <FormTitle title='Add Transaction' link='transactions' linkDisplay='Transactions' />
+      <FormTitle title='Add Transaction' />
       <Form onSubmit={handleSubmit(onsubmit, onerror)}>
         <CategorySelect errors={errors} control={control} expenses={expenses} incomes={incomes} />
         <AmountFormElement errors={errors} control={control} />

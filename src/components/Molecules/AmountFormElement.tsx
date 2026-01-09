@@ -35,8 +35,11 @@ export default function AmountFormElement({ errors, control }: Props) {
               }
             }}
             sx={{
-              width: '300px',
+              width: '100%',
               margin: '0 auto',
+              '@media (min-width:350px)': {
+                width: '300px',
+              },
               '& .MuiOutlinedInput-root': {
                 backgroundColor: 'white',
                 '& fieldset': {

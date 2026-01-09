@@ -20,8 +20,12 @@ export default function Input<T extends FieldValues>({ field, label, type, autoC
       helperText={fieldState.error?.message}
       variant='outlined'
       sx={{
-        width: '300px',
-        margin: '0 auto',
+        width: '100%',
+        margin: 0,
+        '@media (min-width:350px)': {
+          width: '300px',
+          margin: '0 auto',
+        },
         '& .MuiOutlinedInput-root': {
           backgroundColor: 'white',
           '& fieldset': {

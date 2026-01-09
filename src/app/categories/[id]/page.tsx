@@ -40,8 +40,8 @@ export default function CategoryDetails() {
 
   return (
     <div>
-      <FormTitle title='Category Details' link='categories' linkDisplay='Categories' />
-      <div className='w-full h-full md:max-w-screen-md mx-auto'>
+      <FormTitle title='Category Details' />
+      <div className='w-full h-full md:max-w-screen-md mx-auto mt-10'>
         <div className='bg-[color:var(--color-primary)] text-white font-bold w-full h-10 text-center leading-10'>{parent ? 'Child Category' : 'Parent Category'}</div>
         { parent && <Row head='Parent' body={parent} /> }
         <Row head='Name' body={category?.name ?? ''} />

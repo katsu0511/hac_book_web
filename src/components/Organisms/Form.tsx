@@ -17,6 +17,7 @@ export default function Form({ children, onSubmit }: FormProps) {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        py: 5
       }}
     >
       {children}

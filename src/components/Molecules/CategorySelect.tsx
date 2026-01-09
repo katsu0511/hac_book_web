@@ -11,7 +11,16 @@ type Props = {
 
 export default function CategorySelect({ errors, control, expenses, incomes }: Props) {
   return (
-    <FormControl margin='normal' error={!!errors.categoryId} sx={{ width: 300 }}>
+    <FormControl
+      margin='normal'
+      error={!!errors.categoryId}
+      sx={{
+        width: '100%',
+        '@media (min-width:350px)': {
+          width: 300,
+        },
+      }}
+    >
       <InputLabel id='categoryId'>Category</InputLabel>
       <Controller
         name='categoryId'

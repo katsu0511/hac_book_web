@@ -9,7 +9,16 @@ type Props = {
 
 export default function TypeSelect({ errors, control }: Props) {
   return (
-    <FormControl margin='normal' error={!!errors.type} sx={{ width: 300 }}>
+    <FormControl
+      margin='normal'
+      error={!!errors.type}
+      sx={{
+        width: '100%',
+        '@media (min-width:350px)': {
+          width: 300,
+        },
+      }}
+    >
       <InputLabel id='type'>Type</InputLabel>
       <Controller
         name='type'

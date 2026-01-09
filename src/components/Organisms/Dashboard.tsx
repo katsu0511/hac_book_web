@@ -42,27 +42,27 @@ export default function Dashboard({ month, start, end, setStart, setEnd }: Props
       <TitleLine title='Income and Expense' month={month} start={startStr} end={endStr} />
       {
         start && end && setStart && setEnd &&
-        <div className='w-160 mx-auto mb-10'>
+        <div className='w-full mx-auto mb-4 md:w-160 md:mb-10'>
           <Date label='Start date' date={start} onChange={setStart} maxDate={end} />
           <Date label='End date' date={end} onChange={setEnd} minDate={start} />
         </div>
       }
-      <div className='flex justify-center items-center'>
-        <div className='w-1/2 text-xl'>
-          <div className='flex items-center py-3'>
-            <h3 className='w-60'>Income:</h3>
-            <p>${income}</p>
+      <div className='block items-center xl:flex xl:justify-center'>
+        <DoughnutGraph expenses={expenseBreakdown} />
+        <div className='w-full text-xl order-1 pb-10 xl:w-1/2 xl:pb-0'>
+          <div className='flex items-center w-72 py-3 mx-auto md:w-85'>
+            <h3 className='w-47 md:w-60'>Income:</h3>
+            <p className='w-25'>${income}</p>
           </div>
-          <div className='flex items-center py-3'>
-            <h3 className='w-60'>Expense:</h3>
-            <p>${expense}</p>
+          <div className='flex items-center w-72 py-3 mx-auto md:w-85'>
+            <h3 className='w-47 md:w-60'>Expense:</h3>
+            <p className='w-25'>${expense}</p>
           </div>
-          <div className='flex items-center py-3'>
-            <h3 className='w-60'>Income - Expense:</h3>
-            <p>${income - expense}</p>
+          <div className='flex items-center w-72 py-3 mx-auto md:w-85'>
+            <h3 className='w-47 md:w-60'>Income - Expense:</h3>
+            <p className='w-25'>${income - expense}</p>
           </div>
         </div>
-        <DoughnutGraph expenses={expenseBreakdown} />
       </div>
     </div>
   );
