@@ -1,7 +1,7 @@
 'use client';
 
-import { handleLogout } from "@/lib/api/auth";
-import useAuthState from "@/lib/hooks/useAuthState";
+import useAuthState from '@/lib/hooks/useAuthState';
+import { handleLogout } from '@/lib/api/auth';
 
 export default function LogoutButton() {
   const { refreshAuth, router } = useAuthState();

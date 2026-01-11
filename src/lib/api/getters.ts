@@ -15,8 +15,8 @@ export async function getAuth(): Promise<boolean> {
 
     if (!res.ok) return false;
 
-    const json = await res.json();
-    return json.authenticated;
+    const authenticated: boolean = await res.json();
+    return authenticated;
   } catch (error) {
     console.error('Auth check failed:', error);
     return false;
