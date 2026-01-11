@@ -1,9 +1,6 @@
 'use client';
 
-import { Categories, CategoryForEdit } from '@/types/category';
-import Summary from '@/types/summary';
-
-export async function getAuth(): Promise<boolean> {
+export async function getAuth(): Promise<Result> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/check-auth`, {
       method: 'GET',
@@ -13,13 +10,12 @@ export async function getAuth(): Promise<boolean> {
       credentials: 'include'
     });
 
-    if (!res.ok) return false;
+    if (!res.ok) return { ok: res.ok, error: 'Failed to check authentication' };
 
-    const authenticated: boolean = await res.json();
-    return authenticated;
+    return { ok: res.ok, response: res };
   } catch (error) {
-    console.error('Auth check failed:', error);
-    return false;
+    const message = error instanceof Error ? error.message : 'Unknown error occurred.';
+    return { ok: false, error: message };
   }
 }
 
@@ -33,16 +29,19 @@ export async function getCategory(id: string): Promise<Result> {
       credentials: 'include'
     });
 
-    if (!res.ok) return { ok: res.ok, error: 'failed to get category' };
+    if (!res.ok) {
+      const data = await res.json();
+      return { ok: res.ok, error: data.message };
+    }
 
     return { ok: res.ok, response: res };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'unknown error';
+    const message = error instanceof Error ? error.message : 'Unknown error occurred.';
     return { ok: false, error: message };
   }
 }
 
-export async function getCategoryForEdit(id: string): Promise<CategoryForEdit | null | undefined> {
+export async function getCategoryForEdit(id: string): Promise<Result> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/categories/${id}/edit`, {
       method: 'GET',
@@ -52,17 +51,19 @@ export async function getCategoryForEdit(id: string): Promise<CategoryForEdit | 
       credentials: 'include'
     });
 
-    if (!res.ok) return null;
+    if (!res.ok) {
+      const data = await res.json();
+      return { ok: res.ok, error: data.message };
+    }
 
-    const categoryForEdit: CategoryForEdit = await res.json();
-    return categoryForEdit;
+    return { ok: res.ok, response: res };
   } catch (error) {
-    console.log(error instanceof Error ? error.message : 'unknown error');
-    return;
+    const message = error instanceof Error ? error.message : 'Unknown error occurred.';
+    return { ok: false, error: message };
   }
 }
 
-export async function getCategories(): Promise<Categories | null | undefined> {
+export async function getCategories(): Promise<Result> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/categories`, {
       method: 'GET',
@@ -72,17 +73,19 @@ export async function getCategories(): Promise<Categories | null | undefined> {
       credentials: 'include'
     });
 
-    if (!res.ok) return null;
+    if (!res.ok) {
+      const data = await res.json();
+      return { ok: res.ok, error: data.message };
+    }
 
-    const categories: Categories = await res.json();
-    return categories;
+    return { ok: res.ok, response: res };
   } catch (error) {
-    console.log(error instanceof Error ? error.message : 'unknown error');
-    return;
+    const message = error instanceof Error ? error.message : 'Unknown error occurred.';
+    return { ok: false, error: message };
   }
 }
 
-export async function getParentCategories(): Promise<Categories | null | undefined> {
+export async function getParentCategories(): Promise<Result> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/parent-categories`, {
       method: 'GET',
@@ -92,13 +95,15 @@ export async function getParentCategories(): Promise<Categories | null | undefin
       credentials: 'include'
     });
 
-    if (!res.ok) return null;
+    if (!res.ok) {
+      const data = await res.json();
+      return { ok: res.ok, error: data.message };
+    }
 
-    const parentCategories: Categories = await res.json();
-    return parentCategories;
+    return { ok: res.ok, response: res };
   } catch (error) {
-    console.log(error instanceof Error ? error.message : 'unknown error');
-    return;
+    const message = error instanceof Error ? error.message : 'Unknown error occurred.';
+    return { ok: false, error: message };
   }
 }
 
@@ -112,16 +117,19 @@ export async function getTransaction(id: string): Promise<Result> {
       credentials: 'include'
     });
 
-    if (!res.ok) return { ok: res.ok, error: 'failed to get transaction' };
+    if (!res.ok) {
+      const data = await res.json();
+      return { ok: res.ok, error: data.message };
+    }
 
     return { ok: res.ok, response: res };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'unknown error';
+    const message = error instanceof Error ? error.message : 'Unknown error occurred.';
     return { ok: false, error: message };
   }
 }
 
-export async function getTransactionForEdit(id: string): Promise<TransactionForEdit | null | undefined> {
+export async function getTransactionForEdit(id: string): Promise<Result> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/transactions/${id}/edit`, {
       method: 'GET',
@@ -131,17 +139,19 @@ export async function getTransactionForEdit(id: string): Promise<TransactionForE
       credentials: 'include'
     });
 
-    if (!res.ok) return null;
+    if (!res.ok) {
+      const data = await res.json();
+      return { ok: res.ok, error: data.message };
+    }
 
-    const transactionForEdit: TransactionForEdit = await res.json();
-    return transactionForEdit;
+    return { ok: res.ok, response: res };
   } catch (error) {
-    console.log(error instanceof Error ? error.message : 'unknown error');
-    return;
+    const message = error instanceof Error ? error.message : 'Unknown error occurred.';
+    return { ok: false, error: message };
   }
 }
 
-export async function getTransactions(): Promise<Transaction[] | null | undefined> {
+export async function getTransactions(): Promise<Result> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/transactions`, {
       method: 'GET',
@@ -151,17 +161,19 @@ export async function getTransactions(): Promise<Transaction[] | null | undefine
       credentials: 'include'
     });
 
-    if (!res.ok) return null;
+    if (!res.ok) {
+      const data = await res.json();
+      return { ok: res.ok, error: data.message };
+    }
 
-    const transactions: Transaction[] = await res.json();
-    return transactions;
+    return { ok: res.ok, response: res };
   } catch (error) {
-    console.log(error instanceof Error ? error.message : 'unknown error');
-    return;
+    const message = error instanceof Error ? error.message : 'Unknown error occurred.';
+    return { ok: false, error: message };
   }
 }
 
-export async function getSummary(start?: string, end?: string): Promise<Summary | null> {
+export async function getSummary(start?: string, end?: string): Promise<Result> {
   try {
     const params = new URLSearchParams();
     if (start) params.append('start', start);
@@ -176,12 +188,14 @@ export async function getSummary(start?: string, end?: string): Promise<Summary 
       credentials: 'include'
     });
 
-    if (!res.ok) return null;
+    if (!res.ok) {
+      const data = await res.json();
+      return { ok: res.ok, error: data.message };
+    }
 
-    const summary: Summary = await res.json();
-    return summary;
+    return { ok: res.ok, response: res };
   } catch (error) {
-    console.log(error instanceof Error ? error.message : 'unknown error');
-    return null;
+    const message = error instanceof Error ? error.message : 'Unknown error occurred.';
+    return { ok: false, error: message };
   }
 }
