@@ -36,20 +36,22 @@ export default function ModifyTransaction() {
   const { control, handleSubmit, formState: { errors }, reset } = useForm<TransactionFormData>({ defaultValues });
 
   const fetchTransactionForEdit = useCallback(async () => {
-    const transactionForEdit = await getTransactionForEdit(id as string);
-    if (transactionForEdit === undefined) return;
-    else if (transactionForEdit === null) return router.replace('/');
-    reset({
-      id: transactionForEdit.transaction.id,
-      categoryId: transactionForEdit.transaction.categoryId,
-      amount: transactionForEdit.transaction.amount,
-      currency: transactionForEdit.transaction.currency,
-      description: transactionForEdit.transaction.description ?? '',
-      transactionDate: transactionForEdit.transaction.transactionDate
-    });
-    setExpenses(transactionForEdit.categories.expense);
-    setIncomes(transactionForEdit.categories.income);
-  }, [id, router, reset]);
+    const result = await getTransactionForEdit(id as string);
+    if (!result.ok) console.log(result.error);
+    else {
+      const transactionForEdit: TransactionForEdit = await result.response.json();
+      reset({
+        id: transactionForEdit.transaction.id,
+        categoryId: transactionForEdit.transaction.categoryId,
+        amount: transactionForEdit.transaction.amount,
+        currency: transactionForEdit.transaction.currency,
+        description: transactionForEdit.transaction.description ?? '',
+        transactionDate: transactionForEdit.transaction.transactionDate
+      });
+      setExpenses(transactionForEdit.categories.expense);
+      setIncomes(transactionForEdit.categories.income);
+    }
+  }, [id, reset]);
 
   const loadData = useCallback(async () => {
     setLoadingData(true);
