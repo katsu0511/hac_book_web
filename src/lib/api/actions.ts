@@ -14,13 +14,13 @@ export async function login(email: string, password: string): Promise<Result> {
     });
 
     if (!res.ok) {
-      const json = await res.json();
-      return { ok: res.ok, error: json.loginFailed };
+      const data = await res.json();
+      return { ok: res.ok, error: data.message };
     }
 
     return { ok: res.ok, response: res };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unknown error';
+    const message = error instanceof Error ? error.message : 'Unknown error occurred.';
     return { ok: false, error: message };
   }
 }
@@ -35,11 +35,11 @@ export async function logout(): Promise<Result> {
       credentials: 'include'
     });
 
-    if (!res.ok) return { ok: res.ok, error: 'Logout failed' };
+    if (!res.ok) return { ok: res.ok, error: 'Failed to logout.' };
 
     return { ok: res.ok, response: res };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unknown error';
+    const message = error instanceof Error ? error.message : 'Unknown error occurred.';
     return { ok: false, error: message };
   }
 }
@@ -56,17 +56,17 @@ export async function signup(name: string, email: string, password: string): Pro
     });
 
     if (!res.ok) {
-      const json = await res.json();
+      const data = await res.json();
       let message = '';
-      if (json.email) message += json.email;
-      if (json.password) message += json.password;
-      if (json.signupFailed) message += json.signupFailed;
+      if (data.email) message += data.email + '\n';
+      if (data.password) message += data.password + '\n';
+      if (!data.email && !data.password) message = data.message;
       return { ok: res.ok, error: message };
     }
 
     return { ok: res.ok, response: res };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unknown error';
+    const message = error instanceof Error ? error.message : 'Unknown error occurred.';
     return { ok: false, error: message };
   }
 }
@@ -82,11 +82,14 @@ export async function addCategory(data: CategoryFormData): Promise<Result> {
       credentials: 'include'
     });
 
-    if (!res.ok) return { ok: res.ok, error: 'failed to add category' };
+    if (!res.ok) {
+      const data = await res.json();
+      return { ok: res.ok, error: data.message };
+    }
 
     return { ok: res.ok, response: res };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'unknown error';
+    const message = error instanceof Error ? error.message : 'Unknown error occurred.';
     return { ok: false, error: message };
   }
 }
@@ -102,11 +105,14 @@ export async function modifyCategory(data: CategoryFormData): Promise<Result> {
       credentials: 'include'
     });
 
-    if (!res.ok) return { ok: res.ok, error: 'failed to modify category' };
+    if (!res.ok) {
+      const data = await res.json();
+      return { ok: res.ok, error: data.message };
+    }
 
     return { ok: res.ok, response: res };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'unknown error';
+    const message = error instanceof Error ? error.message : 'Unknown error occurred.';
     return { ok: false, error: message };
   }
 }
@@ -122,11 +128,14 @@ export async function addTransaction(data: TransactionFormData): Promise<Result>
       credentials: 'include'
     });
 
-    if (!res.ok) return { ok: res.ok, error: 'failed to add transaction' };
+    if (!res.ok) {
+      const data = await res.json();
+      return { ok: res.ok, error: data.message };
+    }
 
     return { ok: res.ok, response: res };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'unknown error';
+    const message = error instanceof Error ? error.message : 'Unknown error occurred.';
     return { ok: false, error: message };
   }
 }
@@ -142,31 +151,33 @@ export async function modifyTransaction(data: TransactionFormData): Promise<Resu
       credentials: 'include'
     });
 
-    if (!res.ok) return { ok: res.ok, error: 'failed to modify transaction' };
+    if (!res.ok) {
+      const data = await res.json();
+      return { ok: res.ok, error: data.message };
+    }
 
     return { ok: res.ok, response: res };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'unknown error';
+    const message = error instanceof Error ? error.message : 'Unknown error occurred.';
     return { ok: false, error: message };
   }
 }
 
-export async function deleteTransaction(id: string) {
+export async function deleteTransaction(id: string): Promise<Result> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/transactions/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id }),
       credentials: 'include'
     });
 
-    if (!res.ok) return 'failed to delete transaction';
+    if (!res.ok) return { ok: res.ok, error: 'Failed to delete transaction.' };
 
-    const deleted = await res.json();
-    return deleted;
+    return { ok: res.ok, response: res };
   } catch (error) {
-    return error instanceof Error ? error.message : 'unknown error';
+    const message = error instanceof Error ? error.message : 'Unknown error occurred.';
+    return { ok: false, error: message };
   }
 }

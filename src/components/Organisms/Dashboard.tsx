@@ -3,6 +3,7 @@
 import { Dayjs } from 'dayjs';
 import { useState, useCallback, useEffect } from 'react';
 import { getSummary } from '@/lib/api/getters';
+import { ExpenseBreakdown, Summary } from '@/types/summary';
 import TitleLine from '@/components/Molecules/TitleLine';
 import Date from '@/components/Atoms/Date';
 import DoughnutGraph from '@/components/Molecules/DoughnutGraph';
@@ -18,15 +19,16 @@ type Props = {
 export default function Dashboard({ month, start, end, setStart, setEnd }: Props) {
   const [income, setIncome] = useState<number>(0);
   const [expense, setExpense] = useState<number>(0);
-  const [expenseBreakdown, setExpenseBreakdown] = useState<Record<string, number>>({});
+  const [expenseBreakdown, setExpenseBreakdown] = useState<ExpenseBreakdown[]>([]);
 
   const startStr = start ? start.format('YYYY-MM-DD') : undefined;
   const endStr = end ? end.format('YYYY-MM-DD') : undefined;
 
   const fetchSummary = useCallback(async () => {
-    const summary = await getSummary(startStr, endStr);
-    if (summary === null) return;
+    const result = await getSummary(startStr, endStr);
+    if (!result.ok) console.log(result.error);
     else {
+      const summary: Summary = await result.response.json();
       setIncome(summary.income);
       setExpense(summary.expense);
       setExpenseBreakdown(summary.expenseBreakdown);

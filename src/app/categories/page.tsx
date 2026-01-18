@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Category } from '@/types/category';
-import { useRouter } from 'next/navigation';
+import { Category, Categories as CategoryList } from '@/types/category';
 import { useCallback, useEffect } from 'react';
 import { getCategories } from '@/lib/api/getters';
 import TitleLine from '@/components/Molecules/TitleLine';
@@ -12,21 +11,20 @@ import LinkElement from '@/components/Molecules/LinkElement';
 export default function Categories() {
   const [incomes, setIncomes] = useState<Category[]>([]);
   const [expenses, setExpenses] = useState<Category[]>([]);
-  const router = useRouter();
 
-  const category = useCallback(async () => {
-    const categories = await getCategories();
-    if (categories === undefined) return;
-    else if (categories === null) router.replace('/');
+  const fetchCategories = useCallback(async () => {
+    const result = await getCategories();
+    if (!result.ok) console.log(result.error);
     else {
+      const categories: CategoryList = await result.response.json();
       if (categories.income) setIncomes(categories.income);
       if (categories.expense) setExpenses(categories.expense);
     }
-  }, [router]);
+  }, []);
 
   useEffect(() => {
-    category();
-  }, [category]);
+    fetchCategories();
+  }, [fetchCategories]);
 
   return (
     <div className='pb-10'>

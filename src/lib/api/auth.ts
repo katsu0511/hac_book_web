@@ -1,9 +1,19 @@
+'use client';
+
 import { getAuth } from '@/lib/api/getters';
-import { login, logout, signup } from '@/lib/api/actions';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { login, logout, signup } from '@/lib/api/actions';
 
 export const handleGetAuth = async (): Promise<boolean> => {
-  return await getAuth();
+  const res = await getAuth();
+
+  if (!res.ok) {
+    console.log(res.error);
+    return false;
+  }
+
+  const authenticated: boolean = await res.response.json();
+  return authenticated;
 }
 
 export const handleLogin = async (
