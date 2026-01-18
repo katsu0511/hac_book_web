@@ -11,7 +11,7 @@ const useAuthState = () => {
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [loadingState, setLoadingState] = useState(false);
   const [error, setError] = useState('');
-  const { authenticated, refreshAuth } = useAuth();
+  const { authenticated, loading, refreshAuth } = useAuth();
   const router = useRouter();
 
   return {
@@ -28,6 +28,7 @@ const useAuthState = () => {
     error,
     setError,
     authenticated,
+    loading,
     refreshAuth,
     router
   };
