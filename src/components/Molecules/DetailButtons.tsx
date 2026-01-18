@@ -17,8 +17,8 @@ export default function DetailButtons({id, link}: {id?: string, link: string}) {
 
   const onDelete = async(id?: string) => {
     if (!id) return;
-    const deleted = await deleteTransaction(id);
-    if (deleted) {
+    const res = await deleteTransaction(id);
+    if (res.ok) {
       setSnackbarOpen(true);
       setTimeout(() => {
         router.replace(`/${link}`);
