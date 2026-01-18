@@ -1,6 +1,6 @@
 'use client';
 
-import { CategoryFormData, Category } from '@/types/category';
+import { CategoryFormData, Category, CategoryForEdit } from '@/types/category';
 import { useState, useCallback, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import useAuthState from '@/lib/hooks/useAuthState';
@@ -35,10 +35,10 @@ export default function ModifyCategory() {
   const { control, handleSubmit, formState: { errors }, reset } = useForm<CategoryFormData>({ defaultValues });
 
   const fetchCategoryForEdit = useCallback(async () => {
-    const categoryForEdit = await getCategoryForEdit(id as string);
-    if (categoryForEdit === undefined) return;
-    else if (categoryForEdit === null) router.replace('/');
+    const result = await getCategoryForEdit(id as string);
+    if (!result.ok) console.log(result.error);
     else {
+      const categoryForEdit: CategoryForEdit = await result.response.json();
       reset({
         id: categoryForEdit.category.id,
         parentId: categoryForEdit.category.parentId,
@@ -49,7 +49,7 @@ export default function ModifyCategory() {
       setExpenses(categoryForEdit.categories.expense);
       setIncomes(categoryForEdit.categories.income);
     }
-  }, [id, router, reset]);
+  }, [id, reset]);
 
   const loadData = useCallback(async () => {
     setLoadingData(true);
