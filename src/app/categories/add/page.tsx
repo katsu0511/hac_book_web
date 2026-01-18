@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
-import { Category, CategoryFormData } from '@/types/category';
+import { Category, CategoryFormData, Categories } from '@/types/category';
 import useAuthState from '@/lib/hooks/useAuthState';
 import { useForm, FieldErrors } from 'react-hook-form';
 import { getParentCategories } from '@/lib/api/getters';
@@ -29,21 +29,21 @@ export default function AddCategory() {
   const { loadingState, setLoadingState, error, setError, router } = useAuthState();
   const { control, handleSubmit, formState: { errors } } = useForm<CategoryFormData>({ defaultValues });
 
-  const fetchParentCategory = useCallback(async () => {
-    const categories = await getParentCategories();
-    if (categories === undefined) return;
-    else if (categories === null) router.replace('/');
+  const fetchParentCategories = useCallback(async () => {
+    const result = await getParentCategories();
+    if (!result.ok) console.log(result.error);
     else {
+      const categories: Categories = await result.response.json();
       setExpenses(categories.expense);
       setIncomes(categories.income);
     }
-  }, [router]);
+  }, []);
 
   const loadData = useCallback(async () => {
     setLoadingData(true);
-    await fetchParentCategory();
+    await fetchParentCategories();
     setLoadingData(false);
-  }, [fetchParentCategory]);
+  }, [fetchParentCategories]);
 
   useEffect(() => {
     loadData();
