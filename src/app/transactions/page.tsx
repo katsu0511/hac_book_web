@@ -2,7 +2,7 @@
 
 import { getCurrentMonth } from '@/lib/domain/month';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import useAuthState from '@/lib/hooks/useAuthState';
 import { useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@mui/material';
@@ -19,18 +19,20 @@ export default function Transactions() {
   const [id, setId] = useState<string>();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const router = useRouter();
+  const { router } = useAuthState();
 
-  const transaction = useCallback(async () => {
-    const transactions = await getTransactions();
-    if (transactions === undefined) return;
-    else if (transactions === null) router.replace('/');
-    else setTransactions(transactions);
-  }, [router]);
+  const fetchTransactions = useCallback(async () => {
+    const result = await getTransactions();
+    if (!result.ok) console.log(result.error);
+    else {
+      const res: Transaction[] = await result.response.json();
+      setTransactions(res);
+    }
+  }, []);
 
   useEffect(() => {
-    transaction();
-  }, [transaction]);
+    fetchTransactions();
+  }, [fetchTransactions]);
 
   const onOpenDialog = (id: string) => {
     setId(id);
@@ -43,8 +45,8 @@ export default function Transactions() {
 
   const onDelete = async(id?: string) => {
     if (!id) return;
-    const deleted = await deleteTransaction(id);
-    if (deleted) {
+    const res = await deleteTransaction(id);
+    if (res.ok) {
       setSnackbarOpen(true);
       setTransactions(prev => prev.filter(t => t.id !== id));
       setDialogOpen(false);
