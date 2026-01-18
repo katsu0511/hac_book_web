@@ -1,15 +1,19 @@
 'use client';
 
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartOptions } from 'chart.js';
-import { Doughnut } from 'react-chartjs-2';
+import { ExpenseBreakdown } from '@/types/summary';
 import { COLORS } from '@/constants/Color';
+import { Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function DoughnutGraph(props: { expenses: Record<string, number> }) {
-  const entries = Object.entries(props.expenses).filter(([, value]) => value > 0);
-  const labels = entries.map(([k]) => k);
-  const values = entries.map(([, v]) => v);
+export default function DoughnutGraph(props: { expenses: ExpenseBreakdown[] }) {
+  const entries = props.expenses.map(b => ({
+    name: b.categoryName,
+    value: b.total,
+  }));
+  const labels = entries.map(e => e.name);
+  const values = entries.map(e => e.value);
 
   const data = {
     labels,
