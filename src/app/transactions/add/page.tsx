@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
-import { Category } from '@/types/category';
+import { Category, Categories } from '@/types/category';
 import useAuthState from '@/lib/hooks/useAuthState';
 import { useForm, FieldErrors } from 'react-hook-form';
 import { getCategories } from '@/lib/api/getters';
@@ -30,21 +30,21 @@ export default function AddTransaction() {
   const { loadingState, setLoadingState, error, setError, router } = useAuthState();
   const { control, handleSubmit, formState: { errors } } = useForm<TransactionFormData>({ defaultValues });
 
-  const fetchCategory = useCallback(async () => {
-    const categories = await getCategories();
-    if (categories === undefined) return;
-    else if (categories === null) router.replace('/');
+  const fetchCategories = useCallback(async () => {
+    const result = await getCategories();
+    if (!result.ok) console.log(result.error);
     else {
+      const categories: Categories = await result.response.json();
       setExpenses(categories.expense);
       setIncomes(categories.income);
     }
-  }, [router]);
+  }, []);
 
   const loadData = useCallback(async () => {
     setLoadingData(true);
-    await fetchCategory();
+    await fetchCategories();
     setLoadingData(false);
-  }, [fetchCategory]);
+  }, [fetchCategories]);
 
   useEffect(() => {
     loadData();
