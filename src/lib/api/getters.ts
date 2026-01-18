@@ -10,7 +10,7 @@ export async function getAuth(): Promise<Result> {
       credentials: 'include'
     });
 
-    if (!res.ok) return { ok: res.ok, error: 'Failed to check authentication' };
+    if (!res.ok) return { ok: res.ok, error: 'Failed to check authentication.' };
 
     return { ok: res.ok, response: res };
   } catch (error) {

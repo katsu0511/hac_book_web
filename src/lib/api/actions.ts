@@ -35,7 +35,7 @@ export async function logout(): Promise<Result> {
       credentials: 'include'
     });
 
-    if (!res.ok) return { ok: res.ok, error: 'Failed to logout' };
+    if (!res.ok) return { ok: res.ok, error: 'Failed to logout.' };
 
     return { ok: res.ok, response: res };
   } catch (error) {
@@ -170,14 +170,10 @@ export async function deleteTransaction(id: string): Promise<Result> {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id }),
       credentials: 'include'
     });
 
-    if (!res.ok) {
-      const data = await res.json();
-      return { ok: res.ok, error: data.message };
-    }
+    if (!res.ok) return { ok: res.ok, error: 'Failed to delete transaction.' };
 
     return { ok: res.ok, response: res };
   } catch (error) {
