@@ -7,6 +7,7 @@ import useAuthState from '@/lib/hooks/useAuthState';
 import { useForm, FieldErrors } from 'react-hook-form';
 import { getCategoryForEdit } from '@/lib/api/getters';
 import { modifyCategory } from '@/lib/api/actions';
+import { AuthRedirectToLogin } from '@/lib/auth/AuthRedirect';
 import FormTitle from '@/components/Molecules/FormTitle';
 import Form from '@/components/Organisms/Form';
 import ParentCategorySelect from '@/components/Molecules/ParentCategorySelect';
@@ -74,15 +75,17 @@ export default function ModifyCategory() {
   if (loadingData) return <div>Loading...</div>;
 
   return (
-    <div>
-      <FormTitle title='Modify Category' />
-      <Form onSubmit={handleSubmit(onsubmit, onerror)}>
-        <ParentCategorySelect errors={errors} control={control} expenses={expenses} incomes={incomes} />
-        <NameFormElement control={control} />
-        <TypeSelect errors={errors} control={control} />
-        <DescriptionFormElement control={control} />
-        <SubmitButton label='Submit' error={error} loading={loadingState} />
-      </Form>
-    </div>
+    <AuthRedirectToLogin>
+      <div>
+        <FormTitle title='Modify Category' />
+        <Form onSubmit={handleSubmit(onsubmit, onerror)}>
+          <ParentCategorySelect errors={errors} control={control} expenses={expenses} incomes={incomes} />
+          <NameFormElement control={control} />
+          <TypeSelect errors={errors} control={control} />
+          <DescriptionFormElement control={control} />
+          <SubmitButton label='Submit' error={error} loading={loadingState} />
+        </Form>
+      </div>
+    </AuthRedirectToLogin>
   );
 }

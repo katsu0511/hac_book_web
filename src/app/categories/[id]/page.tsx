@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { Category, CategoryDetail } from '@/types/category';
 import { useParams } from 'next/navigation';
 import { getCategory } from '@/lib/api/getters';
+import { AuthRedirectToLogin } from '@/lib/auth/AuthRedirect';
 import FormTitle from '@/components/Molecules/FormTitle';
 import Row from '@/components/Atoms/Row';
 import DetailButtons from '@/components/Molecules/DetailButtons';
@@ -39,16 +40,18 @@ export default function CategoryDetails() {
   if (loadingData) return <div>Loading...</div>;
 
   return (
-    <div>
-      <FormTitle title='Category Details' />
-      <div className='w-full h-full md:max-w-screen-md mx-auto mt-10'>
-        <div className='bg-[color:var(--color-primary)] text-white font-bold w-full h-10 text-center leading-10'>{parent ? 'Child Category' : 'Parent Category'}</div>
-        { parent && <Row head='Parent' body={parent} /> }
-        <Row head='Name' body={category?.name ?? ''} />
-        <Row head='Type' body={category?.type === 'EXPENSE' ? 'Expense' : 'Income'} />
-        <Row head='Description' body={category?.description ?? ''} />
+    <AuthRedirectToLogin>
+      <div>
+        <FormTitle title='Category Details' />
+        <div className='w-full h-full md:max-w-screen-md mx-auto mt-10'>
+          <div className='bg-[color:var(--color-primary)] text-white font-bold w-full h-10 text-center leading-10'>{parent ? 'Child Category' : 'Parent Category'}</div>
+          { parent && <Row head='Parent' body={parent} /> }
+          <Row head='Name' body={category?.name ?? ''} />
+          <Row head='Type' body={category?.type === 'EXPENSE' ? 'Expense' : 'Income'} />
+          <Row head='Description' body={category?.description ?? ''} />
+        </div>
+        <DetailButtons id={category?.id} link='categories' />
       </div>
-      <DetailButtons id={category?.id} link='categories' />
-    </div>
+    </AuthRedirectToLogin>
   );
 }

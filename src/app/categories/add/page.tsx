@@ -6,6 +6,7 @@ import useAuthState from '@/lib/hooks/useAuthState';
 import { useForm, FieldErrors } from 'react-hook-form';
 import { getParentCategories } from '@/lib/api/getters';
 import { addCategory } from '@/lib/api/actions';
+import { AuthRedirectToLogin } from '@/lib/auth/AuthRedirect';
 import FormTitle from '@/components/Molecules/FormTitle';
 import Form from '@/components/Organisms/Form';
 import ParentCategorySelect from '@/components/Molecules/ParentCategorySelect';
@@ -62,7 +63,7 @@ export default function AddCategory() {
   if (loadingData) return <div>Loading...</div>;
 
   return (
-    <>
+    <AuthRedirectToLogin>
       <FormTitle title='Add Category' />
       <Form onSubmit={handleSubmit(onsubmit, onerror)}>
         <ParentCategorySelect errors={errors} control={control} expenses={expenses} incomes={incomes} />
@@ -71,6 +72,6 @@ export default function AddCategory() {
         <DescriptionFormElement control={control} />
         <SubmitButton label='Submit' error={error} loading={loadingState} />
       </Form>
-    </>
+    </AuthRedirectToLogin>
   );
 }
