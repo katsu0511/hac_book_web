@@ -7,6 +7,7 @@ import useAuthState from '@/lib/hooks/useAuthState';
 import { useForm, FieldErrors } from 'react-hook-form';
 import { getTransactionForEdit } from '@/lib/api/getters';
 import { modifyTransaction } from '@/lib/api/actions';
+import { AuthRedirectToLogin } from '@/lib/auth/AuthRedirect';
 import FormTitle from '@/components/Molecules/FormTitle';
 import Form from '@/components/Organisms/Form';
 import CategorySelect from '@/components/Molecules/CategorySelect';
@@ -76,7 +77,7 @@ export default function ModifyTransaction() {
   if (loadingData) return <div>Loading...</div>;
 
   return (
-    <>
+    <AuthRedirectToLogin>
       <FormTitle title='Modify Transaction' />
       <Form onSubmit={handleSubmit(onsubmit, onerror)}>
         <CategorySelect errors={errors} control={control} expenses={expenses} incomes={incomes} />
@@ -85,6 +86,6 @@ export default function ModifyTransaction() {
         <TransactionDate errors={errors} control={control} />
         <SubmitButton label='Submit' error={error} loading={loadingState} />
       </Form>
-    </>
+    </AuthRedirectToLogin>
   );
 }

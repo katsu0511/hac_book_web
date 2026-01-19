@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { getTransaction } from '@/lib/api/getters';
+import { AuthRedirectToLogin } from '@/lib/auth/AuthRedirect';
 import FormTitle from '@/components/Molecules/FormTitle';
 import Row from '@/components/Atoms/Row';
 import DetailButtons from '@/components/Molecules/DetailButtons';
@@ -36,15 +37,17 @@ export default function TransactionDetails() {
   if (loadingData) return <div>Loading...</div>;
 
   return (
-    <div>
-      <FormTitle title='Transaction Details' />
-      <div className='w-full h-full md:max-w-screen-md mx-auto mt-10'>
-        <Row head='Category' body={transaction?.categoryName ?? ''} />
-        <Row head='Amount' body={`$${transaction?.amount}`} />
-        <Row head='Transaction Date' body={transaction?.transactionDate ?? ''} />
-        <Row head='Description' body={transaction?.description ?? ''} />
+    <AuthRedirectToLogin>
+      <div>
+        <FormTitle title='Transaction Details' />
+        <div className='w-full h-full md:max-w-screen-md mx-auto mt-10'>
+          <Row head='Category' body={transaction?.categoryName ?? ''} />
+          <Row head='Amount' body={`$${transaction?.amount}`} />
+          <Row head='Transaction Date' body={transaction?.transactionDate ?? ''} />
+          <Row head='Description' body={transaction?.description ?? ''} />
+        </div>
+        <DetailButtons id={transaction?.id} link='transactions' />
       </div>
-      <DetailButtons id={transaction?.id} link='transactions' />
-    </div>
+    </AuthRedirectToLogin>
   );
 }
