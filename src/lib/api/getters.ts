@@ -2,7 +2,7 @@
 
 export async function getAuth(): Promise<Result> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/check-auth`, {
+    const res = await fetch('/api/check-auth', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -21,7 +21,7 @@ export async function getAuth(): Promise<Result> {
 
 export async function getCategory(id: string): Promise<Result> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/categories/${id}`, {
+    const res = await fetch(`/api/categories/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export async function getCategory(id: string): Promise<Result> {
 
 export async function getCategoryForEdit(id: string): Promise<Result> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/categories/${id}/edit`, {
+    const res = await fetch(`/api/categories/${id}/edit`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ export async function getCategoryForEdit(id: string): Promise<Result> {
 
 export async function getCategories(): Promise<Result> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/categories`, {
+    const res = await fetch('/api/categories', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ export async function getCategories(): Promise<Result> {
 
 export async function getParentCategories(): Promise<Result> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/parent-categories`, {
+    const res = await fetch('/api/parent-categories', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ export async function getParentCategories(): Promise<Result> {
 
 export async function getTransaction(id: string): Promise<Result> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/transactions/${id}`, {
+    const res = await fetch(`/api/transactions/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -131,7 +131,7 @@ export async function getTransaction(id: string): Promise<Result> {
 
 export async function getTransactionForEdit(id: string): Promise<Result> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/transactions/${id}/edit`, {
+    const res = await fetch(`/api/transactions/${id}/edit`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -153,7 +153,7 @@ export async function getTransactionForEdit(id: string): Promise<Result> {
 
 export async function getTransactions(): Promise<Result> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/transactions`, {
+    const res = await fetch('/api/transactions', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -180,7 +180,7 @@ export async function getSummary(start?: string, end?: string): Promise<Result> 
     if (end) params.append('end', end);
     const queryString = params.toString();
     const parameter = queryString ? `?${queryString}` : '';
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/dashboard/summary${parameter}`, {
+    const res = await fetch(`/api/dashboard/summary${parameter}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

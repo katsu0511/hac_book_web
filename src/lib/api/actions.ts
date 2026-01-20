@@ -4,7 +4,7 @@ import { CategoryFormData } from "@/types/category";
 
 export async function login(email: string, password: string): Promise<Result> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/login`, {
+    const res = await fetch('/api/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ export async function login(email: string, password: string): Promise<Result> {
 
 export async function logout(): Promise<Result> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/logout`, {
+    const res = await fetch('/api/logout', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ export async function logout(): Promise<Result> {
 
 export async function signup(name: string, email: string, password: string): Promise<Result> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/signup`, {
+    const res = await fetch('/api/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ export async function signup(name: string, email: string, password: string): Pro
 
 export async function addCategory(data: CategoryFormData): Promise<Result> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/categories`, {
+    const res = await fetch('/api/categories', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ export async function addCategory(data: CategoryFormData): Promise<Result> {
 
 export async function modifyCategory(data: CategoryFormData): Promise<Result> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/categories/${data.id}`, {
+    const res = await fetch(`/api/categories/${data.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -119,7 +119,7 @@ export async function modifyCategory(data: CategoryFormData): Promise<Result> {
 
 export async function addTransaction(data: TransactionFormData): Promise<Result> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/transactions`, {
+    const res = await fetch('/api/transactions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -142,7 +142,7 @@ export async function addTransaction(data: TransactionFormData): Promise<Result>
 
 export async function modifyTransaction(data: TransactionFormData): Promise<Result> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/transactions/${data.id}`, {
+    const res = await fetch(`/api/transactions/${data.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -165,7 +165,7 @@ export async function modifyTransaction(data: TransactionFormData): Promise<Resu
 
 export async function deleteTransaction(id: string): Promise<Result> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/transactions/${id}`, {
+    const res = await fetch(`/api/transactions/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
