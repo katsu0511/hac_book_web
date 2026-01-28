@@ -33,7 +33,7 @@ export default function ModifyTransaction() {
   const params = useParams();
   const id = params?.id;
 
-  const { loadingState, setLoadingState, error, setError, router } = useAuthState();
+  const { buttonLoading, setButtonLoading, error, setError, router } = useAuthState();
   const { control, handleSubmit, formState: { errors }, reset } = useForm<TransactionFormData>({ defaultValues });
 
   const fetchTransactionForEdit = useCallback(async () => {
@@ -65,11 +65,11 @@ export default function ModifyTransaction() {
   }, [loadData]);
 
   const onsubmit = async (data: TransactionFormData) => {
-    setLoadingState(true);
+    setButtonLoading(true);
     const res = await modifyTransaction(data);
     if (res.ok) router.replace('/transactions');
     else setError(res.error);
-    setLoadingState(false);
+    setButtonLoading(false);
   };
 
   const onerror = (err: FieldErrors<TransactionFormData>) => console.log(err);
@@ -84,7 +84,7 @@ export default function ModifyTransaction() {
         <AmountFormElement errors={errors} control={control} />
         <DescriptionFormElement control={control} />
         <TransactionDate errors={errors} control={control} />
-        <SubmitButton label='Submit' error={error} loading={loadingState} />
+        <SubmitButton label='Submit' error={error} loading={buttonLoading} />
       </Form>
     </AuthRedirectToLogin>
   );
