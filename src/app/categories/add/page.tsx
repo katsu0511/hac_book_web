@@ -27,7 +27,7 @@ export default function AddCategory() {
   const [incomes, setIncomes] = useState<Category[]>([]);
   const [loadingData, setLoadingData] = useState(true);
 
-  const { loadingState, setLoadingState, error, setError, router } = useAuthState();
+  const { buttonLoading, setButtonLoading, error, setError, router } = useAuthState();
   const { control, handleSubmit, formState: { errors } } = useForm<CategoryFormData>({ defaultValues });
 
   const fetchParentCategories = useCallback(async () => {
@@ -51,11 +51,11 @@ export default function AddCategory() {
   }, [loadData]);
 
   const onsubmit = async (data: CategoryFormData) => {
-    setLoadingState(true);
+    setButtonLoading(true);
     const res = await addCategory(data);
     if (res.ok) router.replace('/categories');
     else setError(res.error);
-    setLoadingState(false);
+    setButtonLoading(false);
   };
 
   const onerror = (err: FieldErrors<CategoryFormData>) => console.log(err);
@@ -70,7 +70,7 @@ export default function AddCategory() {
         <NameFormElement control={control} />
         <TypeSelect errors={errors} control={control} />
         <DescriptionFormElement control={control} />
-        <SubmitButton label='Submit' error={error} loading={loadingState} />
+        <SubmitButton label='Submit' error={error} loading={buttonLoading} />
       </Form>
     </AuthRedirectToLogin>
   );
