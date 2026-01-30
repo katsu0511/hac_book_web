@@ -32,7 +32,7 @@ export default function ModifyCategory() {
   const params = useParams();
   const id = params?.id;
 
-  const { loadingState, setLoadingState, error, setError, router } = useAuthState();
+  const { buttonLoading, setButtonLoading, error, setError, router } = useAuthState();
   const { control, handleSubmit, formState: { errors }, reset } = useForm<CategoryFormData>({ defaultValues });
 
   const fetchCategoryForEdit = useCallback(async () => {
@@ -63,11 +63,11 @@ export default function ModifyCategory() {
   }, [loadData]);
 
   const onsubmit = async (data: CategoryFormData) => {
-    setLoadingState(true);
+    setButtonLoading(true);
     const res = await modifyCategory(data);
     if (res.ok) router.replace('/categories');
     else setError(res.error);
-    setLoadingState(false);
+    setButtonLoading(false);
   };
 
   const onerror = (err: FieldErrors<CategoryFormData>) => console.log(err);
@@ -83,7 +83,7 @@ export default function ModifyCategory() {
           <NameFormElement control={control} />
           <TypeSelect errors={errors} control={control} />
           <DescriptionFormElement control={control} />
-          <SubmitButton label='Submit' error={error} loading={loadingState} />
+          <SubmitButton label='Submit' error={error} loading={buttonLoading} />
         </Form>
       </div>
     </AuthRedirectToLogin>
