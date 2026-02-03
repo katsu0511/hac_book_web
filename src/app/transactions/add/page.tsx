@@ -28,7 +28,7 @@ export default function AddTransaction() {
   const [incomes, setIncomes] = useState<Category[]>([]);
   const [loadingData, setLoadingData] = useState(true);
 
-  const { loadingState, setLoadingState, error, setError, router } = useAuthState();
+  const { buttonLoading, setButtonLoading, error, setError, router } = useAuthState();
   const { control, handleSubmit, formState: { errors } } = useForm<TransactionFormData>({ defaultValues });
 
   const fetchCategories = useCallback(async () => {
@@ -52,11 +52,11 @@ export default function AddTransaction() {
   }, [loadData]);
 
   const onsubmit = async (data: TransactionFormData) => {
-    setLoadingState(true);
+    setButtonLoading(true);
     const res = await addTransaction(data);
     if (res.ok) router.replace('/transactions');
     else setError(res.error);
-    setLoadingState(false);
+    setButtonLoading(false);
   };
 
   const onerror = (err: FieldErrors<TransactionFormData>) => console.log(err);
@@ -71,7 +71,7 @@ export default function AddTransaction() {
         <AmountFormElement errors={errors} control={control} />
         <DescriptionFormElement control={control} />
         <TransactionDate errors={errors} control={control} />
-        <SubmitButton label='Submit' error={error} loading={loadingState} />
+        <SubmitButton label='Submit' error={error} loading={buttonLoading} />
       </Form>
     </AuthRedirectToLogin>
   );

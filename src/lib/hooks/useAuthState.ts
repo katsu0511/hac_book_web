@@ -9,9 +9,9 @@ const useAuthState = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [loadingState, setLoadingState] = useState(false);
+  const [buttonLoading, setButtonLoading] = useState(false);
   const [error, setError] = useState('');
-  const { authenticated, loading, refreshAuth } = useAuth();
+  const { authenticated, authLoading, refreshAuth } = useAuth();
   const router = useRouter();
 
   return {
@@ -23,12 +23,12 @@ const useAuthState = () => {
     setPassword,
     passwordConfirm,
     setPasswordConfirm,
-    loadingState,
-    setLoadingState,
+    buttonLoading,
+    setButtonLoading,
     error,
     setError,
     authenticated,
-    loading,
+    authLoading,
     refreshAuth,
     router
   };

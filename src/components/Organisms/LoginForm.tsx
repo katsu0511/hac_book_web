@@ -15,13 +15,13 @@ const defaultValues = {
 };
 
 export default function LoginForm() {
-  const { loadingState, setLoadingState, error, setError, refreshAuth, router } = useAuthState();
+  const { buttonLoading, setButtonLoading, error, setError, refreshAuth, router } = useAuthState();
   const { control, handleSubmit, reset } = useForm<AuthFormData>({ defaultValues });
 
   const login = async (data: AuthFormData) => {
-    setLoadingState(true);
+    setButtonLoading(true);
     await handleLogin(data.email, data.password, setError, refreshAuth, router);
-    setLoadingState(false);
+    setButtonLoading(false);
   };
 
   const inputDemoInfo = async () => {
@@ -39,7 +39,7 @@ export default function LoginForm() {
     <Form onSubmit={handleSubmit(login)}>
       <AuthFormElement name='email' label='Email' type='email' control={control} autoComplete='email' />
       <AuthFormElement name='password' label='Password' type='password' control={control} autoComplete='current-password' />
-      <SubmitButton label='Login' error={error} loading={loadingState} />
+      <SubmitButton label='Login' error={error} loading={buttonLoading} />
       <Box py={1}>
         <Button variant='contained' color='warning' onClick={inputDemoInfo}>Demo account</Button>
       </Box>

@@ -16,13 +16,13 @@ const defaultValues = {
 };
 
 export default function SignupForm() {
-  const { loadingState, setLoadingState, error, setError, refreshAuth, router } = useAuthState();
+  const { buttonLoading, setButtonLoading, error, setError, refreshAuth, router } = useAuthState();
   const { control, handleSubmit } = useForm<AuthFormData>({ defaultValues });
 
   const signup = async(data: AuthFormData) => {
-    setLoadingState(true);
+    setButtonLoading(true);
     await handleSignup(data.name, data.email, data.password, data.passwordConfirm, setError, refreshAuth, router);
-    setLoadingState(false);
+    setButtonLoading(false);
   };
 
   return (
@@ -31,7 +31,7 @@ export default function SignupForm() {
       <AuthFormElement name='email' label='Email' type='email' control={control} autoComplete='email' />
       <AuthFormElement name='password' label='Password' type='password' control={control} autoComplete='current-password' />
       <AuthFormElement name='passwordConfirm' label='Password Confirmation' type='password' control={control} autoComplete='new-password' />
-      <SubmitButton label='Signup' error={error} loading={loadingState} />
+      <SubmitButton label='Signup' error={error} loading={buttonLoading} />
       <LinkElement page='login' display='Login' />
     </Form>
   );
