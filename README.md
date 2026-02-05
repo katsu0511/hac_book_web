@@ -1,20 +1,23 @@
 # Hac Book (Frontend)
 
 This is the frontend application for a personal household accounting system.
-Users can record income and expenses, manage categories, and view summaries
+Users can record incomes and expenses, manage categories, and view summaries
 through a clean and responsive UI.
+
+Backend repository 👉 [Hac Book API](https://github.com/katsu0511/hac_book_api)
 
 ## Features
 
 - User authentication (login / logout / signup)
 - Dashboard
-  - Monthly income / expense summary
-  - Expense breakdown by category
+  - Income and expense summary in specific dates
+  - Expense breakdown by category in specific dates
 - Transaction management
-  - Create / edit / delete income and expense records
-  - Filter by date range
+  - Create, edit and delete income and expense records
+  - List monthly records
 - Category management
   - Parent-child category structure
+  - Create and edit user-created categories
 
 ### Login
 ![Login](docs/login.png)
@@ -29,13 +32,13 @@ through a clean and responsive UI.
 ![Categories](docs/categories.png)
 
 > All screenshots are taken in desktop view.
-> The application is fully responsive and supports mobile devices.
+> The application is fully responsive and supports mobile and tablet devices.
 
 ## Tech Stack
 
 - React
-- Next.js (App Router)
 - TypeScript
+- Next.js (App Router)
 - Tailwind CSS
 - Fetch API
 - React Hook Form
@@ -53,8 +56,7 @@ through a clean and responsive UI.
 This frontend communicates with the backend REST API.
 Authentication is handled via JWT stored in HttpOnly cookies.
 
-Backend repository:
-👉 [Hac Book API](https://github.com/katsu0511/hac_book_api)
+Backend repository 👉 [Hac Book API](https://github.com/katsu0511/hac_book_api)
 
 ## Getting Started
 
@@ -66,12 +68,11 @@ npm run dev
 Create ```.env```:
 
 ```
-NEXT_PUBLIC_API_BASE_URL=http://localhost:8080
+API_BASE_URL=http://localhost:8080
 ```
 
 ## Future Improvements
 
 - Improve loading and error handling UX
-- Add chart animations
-- Responsive optimization for mobile
+- Add more flexible summaries
 - Develop mobile apps (iOS / Android)
