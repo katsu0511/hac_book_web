@@ -36,12 +36,22 @@ Backend repository 👉 [Hac Book API](https://github.com/katsu0511/hac_book_api
 
 ## Tech Stack
 
+### Frontend
+
 - React
 - TypeScript
 - Next.js (App Router)
 - Tailwind CSS
 - Fetch API
 - React Hook Form
+
+### Infrastructure
+
+- Vercel
+
+## System Configuration
+
+- Next.js (Vercel)
 
 ## Architecture
 
@@ -57,6 +67,11 @@ This frontend communicates with the backend REST API.
 Authentication is handled via JWT stored in HttpOnly cookies.
 
 Backend repository 👉 [Hac Book API](https://github.com/katsu0511/hac_book_api)
+
+## Deployment
+
+- Vercel
+- CI/CD is introduced by Vercel
 
 ## Getting Started
 
