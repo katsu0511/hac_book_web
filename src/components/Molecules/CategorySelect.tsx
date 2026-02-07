@@ -1,4 +1,5 @@
 import { FieldErrors, Control, Controller } from 'react-hook-form';
+import { TransactionFormData } from '@/types/transaction';
 import { Category } from '@/types/category';
 import { FormControl, InputLabel, Select, ListSubheader, MenuItem, FormHelperText } from '@mui/material';
 
