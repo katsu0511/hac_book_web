@@ -1,5 +1,6 @@
 'use client';
 
+import { TransactionFormData, TransactionForEdit } from '@/types/transaction';
 import { useState, useCallback, useEffect } from 'react';
 import { Category } from '@/types/category';
 import { useParams } from 'next/navigation';
