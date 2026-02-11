@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
+import { Transaction } from '@/types/transaction';
 import { useParams } from 'next/navigation';
 import { getTransaction } from '@/lib/api/getters';
 import { AuthRedirectToLogin } from '@/lib/auth/AuthRedirect';
