@@ -1,6 +1,7 @@
 'use client';
 
 import { CategoryFormData } from "@/types/category";
+import { TransactionFormData } from "@/types/transaction";
 
 export async function login(email: string, password: string): Promise<Result> {
   try {

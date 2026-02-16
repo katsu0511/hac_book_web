@@ -1,3 +1,6 @@
+import { CategoryType } from '@/constants/CategoryType';
+import { Categories } from '@/types/category';
+
 type Transaction = {
   id: string
   userId: string

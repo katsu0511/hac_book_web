@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { Category, Categories } from '@/types/category';
 import useAuthState from '@/lib/hooks/useAuthState';
 import { useForm, FieldErrors } from 'react-hook-form';
+import { TransactionFormData } from '@/types/transaction';
 import { getCategories } from '@/lib/api/getters';
 import { addTransaction } from '@/lib/api/actions';
 import { AuthRedirectToLogin } from '@/lib/auth/AuthRedirect';

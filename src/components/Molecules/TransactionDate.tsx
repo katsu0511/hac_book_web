@@ -1,4 +1,5 @@
 import { FieldErrors, Control, Controller } from 'react-hook-form';
+import { TransactionFormData } from '@/types/transaction';
 import { FormControl, TextField } from '@mui/material';
 
 type Props = {
