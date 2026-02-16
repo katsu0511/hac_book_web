@@ -2,6 +2,7 @@
 
 import { getCurrentMonth } from '@/lib/domain/month';
 import { useState } from 'react';
+import { Transaction } from '@/types/transaction';
 import useAuthState from '@/lib/hooks/useAuthState';
 import { useCallback, useEffect } from 'react';
 import Link from 'next/link';
