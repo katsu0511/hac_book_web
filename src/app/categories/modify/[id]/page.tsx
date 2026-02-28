@@ -45,7 +45,7 @@ export default function ModifyCategory() {
         parentId: categoryForEdit.category.parentId,
         name: categoryForEdit.category.name,
         type: categoryForEdit.category.type,
-        description: categoryForEdit.category.description
+        description: categoryForEdit.category.description ?? ''
       });
       setExpenses(categoryForEdit.categories.expense);
       setIncomes(categoryForEdit.categories.income);
