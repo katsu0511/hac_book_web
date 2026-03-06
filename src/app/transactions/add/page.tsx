@@ -27,7 +27,7 @@ const defaultValues = {
 export default function AddTransaction() {
   const [expenses, setExpenses] = useState<Category[]>([]);
   const [incomes, setIncomes] = useState<Category[]>([]);
-  const [loadingData, setLoadingData] = useState(true);
+  const [dataLoading, setDataLoading] = useState(true);
 
   const { buttonLoading, setButtonLoading, error, setError, router } = useAuthState();
   const { control, handleSubmit, formState: { errors } } = useForm<TransactionFormData>({ defaultValues });
@@ -43,9 +43,9 @@ export default function AddTransaction() {
   }, []);
 
   const loadData = useCallback(async () => {
-    setLoadingData(true);
+    setDataLoading(true);
     await fetchCategories();
-    setLoadingData(false);
+    setDataLoading(false);
   }, [fetchCategories]);
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export default function AddTransaction() {
 
   const onerror = (err: FieldErrors<TransactionFormData>) => console.log(err);
 
-  if (loadingData) return <div>Loading...</div>;
+  if (dataLoading) return <div>Loading...</div>;
 
   return (
     <AuthRedirectToLogin>

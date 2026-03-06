@@ -29,7 +29,7 @@ const defaultValues: TransactionFormData = {
 export default function ModifyTransaction() {
   const [expenses, setExpenses] = useState<Category[]>([]);
   const [incomes, setIncomes] = useState<Category[]>([]);
-  const [loadingData, setLoadingData] = useState(true);
+  const [dataLoading, setDataLoading] = useState(true);
 
   const params = useParams();
   const id = params?.id;
@@ -56,9 +56,9 @@ export default function ModifyTransaction() {
   }, [id, reset]);
 
   const loadData = useCallback(async () => {
-    setLoadingData(true);
+    setDataLoading(true);
     await fetchTransactionForEdit();
-    setLoadingData(false);
+    setDataLoading(false);
   }, [fetchTransactionForEdit]);
 
   useEffect(() => {
@@ -75,7 +75,7 @@ export default function ModifyTransaction() {
 
   const onerror = (err: FieldErrors<TransactionFormData>) => console.log(err);
 
-  if (loadingData) return <div>Loading...</div>;
+  if (dataLoading) return <div>Loading...</div>;
 
   return (
     <AuthRedirectToLogin>

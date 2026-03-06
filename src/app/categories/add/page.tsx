@@ -25,7 +25,7 @@ const defaultValues = {
 export default function AddCategory() {
   const [expenses, setExpenses] = useState<Category[]>([]);
   const [incomes, setIncomes] = useState<Category[]>([]);
-  const [loadingData, setLoadingData] = useState(true);
+  const [dataLoading, setDataLoading] = useState(true);
 
   const { buttonLoading, setButtonLoading, error, setError, router } = useAuthState();
   const { control, handleSubmit, formState: { errors } } = useForm<CategoryFormData>({ defaultValues });
@@ -41,9 +41,9 @@ export default function AddCategory() {
   }, []);
 
   const loadData = useCallback(async () => {
-    setLoadingData(true);
+    setDataLoading(true);
     await fetchParentCategories();
-    setLoadingData(false);
+    setDataLoading(false);
   }, [fetchParentCategories]);
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export default function AddCategory() {
 
   const onerror = (err: FieldErrors<CategoryFormData>) => console.log(err);
 
-  if (loadingData) return <div>Loading...</div>;
+  if (dataLoading) return <div>Loading...</div>;
 
   return (
     <AuthRedirectToLogin>
