@@ -27,7 +27,7 @@ const defaultValues: CategoryFormData = {
 export default function ModifyCategory() {
   const [expenses, setExpenses] = useState<Category[]>([]);
   const [incomes, setIncomes] = useState<Category[]>([]);
-  const [loadingData, setLoadingData] = useState(true);
+  const [dataLoading, setDataLoading] = useState(true);
 
   const params = useParams();
   const id = params?.id;
@@ -53,9 +53,9 @@ export default function ModifyCategory() {
   }, [id, reset]);
 
   const loadData = useCallback(async () => {
-    setLoadingData(true);
+    setDataLoading(true);
     await fetchCategoryForEdit();
-    setLoadingData(false);
+    setDataLoading(false);
   }, [fetchCategoryForEdit]);
 
   useEffect(() => {
@@ -72,7 +72,7 @@ export default function ModifyCategory() {
 
   const onerror = (err: FieldErrors<CategoryFormData>) => console.log(err);
 
-  if (loadingData) return <div>Loading...</div>;
+  if (dataLoading) return <div>Loading...</div>;
 
   return (
     <AuthRedirectToLogin>
