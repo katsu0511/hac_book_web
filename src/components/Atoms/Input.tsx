@@ -2,7 +2,7 @@ import { ControllerRenderProps, ControllerFieldState, FieldValues, Path } from '
 import { TextField } from '@mui/material';
 
 type InputProps<T extends FieldValues> = {
-  field: ControllerRenderProps<T, Path<T>>;
+  field: ControllerRenderProps<T, Path<T>>
   label: string
   type: React.InputHTMLAttributes<HTMLInputElement>['type']
   autoComplete: string
