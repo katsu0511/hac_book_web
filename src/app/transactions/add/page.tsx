@@ -30,7 +30,7 @@ export default function AddTransaction() {
   const [dataLoading, setDataLoading] = useState(true);
 
   const { buttonLoading, setButtonLoading, error, setError, router } = useAuthState();
-  const { control, handleSubmit, formState: { errors } } = useForm<TransactionFormData>({ defaultValues });
+  const { control, handleSubmit, formState: { errors } } = useForm<TransactionFormData>({ defaultValues, mode: 'onChange' });
 
   const fetchCategories = useCallback(async () => {
     const result = await getCategories();
