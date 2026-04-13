@@ -1,6 +1,6 @@
 # Hac Book (Frontend)
 
-This is the frontend application for a personal household accounting system.
+This is the frontend application for Hac Book – a personal household accounting system.
 Users can record incomes and expenses, manage categories, and view summaries
 through a clean and responsive UI.
 
@@ -17,7 +17,7 @@ Backend repository 👉 [Hac Book API](https://github.com/katsu0511/hac_book_api
   - List monthly records
 - Category management
   - Parent-child category structure
-  - Create and edit user-created categories
+  - Create and edit user's categories
 
 ### Login
 ![Login](docs/login.png)
@@ -45,6 +45,13 @@ Backend repository 👉 [Hac Book API](https://github.com/katsu0511/hac_book_api
 - Fetch API
 - React Hook Form
 
+### UI Development
+
+- Storybook
+  - Developed UI components in isolation
+  - Integrated with React Hook Form components for form testing
+  - Improved reusability and maintainability of UI components
+
 ### Infrastructure
 
 - Vercel
@@ -60,6 +67,7 @@ Backend repository 👉 [Hac Book API](https://github.com/katsu0511/hac_book_api
 - API communication via REST
 - Authentication handled by HttpOnly cookies
 - Server-side authentication check
+- Component-driven development using Storybook
 
 ## Backend Integration
 
