@@ -1,6 +1,6 @@
 # Hac Book (Frontend)
 
-This is the frontend application for Hac Book – a personal household accounting system.
+This is the frontend application for **Hac Book** – a personal household accounting system.
 Users can record incomes and expenses, manage categories, and view summaries
 through a clean and responsive UI.
 
