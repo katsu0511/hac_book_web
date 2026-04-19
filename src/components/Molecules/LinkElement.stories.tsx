@@ -9,14 +9,14 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const CategoryDetails: Story = {
+export const Signup: Story = {
   args: {
     page: 'signup',
     display: 'Signup',
   },
 };
 
-export const Signup: Story = {
+export const Login: Story = {
   args: {
     page: 'login',
     display: 'Login',
