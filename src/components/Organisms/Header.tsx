@@ -14,8 +14,10 @@ const satisfy = Satisfy({
   subsets: ['latin'],
 });
 
-export default function Header() {
-  const { authenticated, refreshAuth, router } = useAuthState();
+export default function Header({forceAuthenticated}: {forceAuthenticated?: boolean}) {
+  const auth = useAuthState();
+  const authenticated = forceAuthenticated ? forceAuthenticated : auth.authenticated;
+  const { refreshAuth, router } = auth;
 
   const logout = async () => {
     await handleLogout(refreshAuth, router);
