@@ -39,16 +39,14 @@ export default function TransactionDetails() {
 
   return (
     <AuthRedirectToLogin>
-      <div>
-        <FormTitle title='Transaction Details' />
-        <div className='w-full h-full md:max-w-screen-md mx-auto mt-10'>
-          <Row head='Category' body={transaction?.categoryName ?? ''} />
-          <Row head='Amount' body={`$${transaction?.amount}`} />
-          <Row head='Transaction Date' body={transaction?.transactionDate ?? ''} />
-          <Row head='Description' body={transaction?.description ?? ''} />
-        </div>
-        <DetailButtons id={transaction?.id} link='transactions' />
+      <FormTitle title='Transaction Details' />
+      <div className='w-full h-full md:max-w-screen-md mx-auto mt-10'>
+        <Row head='Category' body={transaction?.categoryName ?? ''} />
+        <Row head='Amount' body={`$${transaction?.amount}`} />
+        <Row head='Transaction Date' body={transaction?.transactionDate ?? ''} />
+        <Row head='Description' body={transaction?.description ?? ''} />
       </div>
+      <DetailButtons id={transaction?.id} link='transactions' />
     </AuthRedirectToLogin>
   );
 }
