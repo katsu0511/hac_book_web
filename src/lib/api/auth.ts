@@ -4,16 +4,16 @@ import { getAuth } from '@/lib/api/getters';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { login, logout, signup } from '@/lib/api/actions';
 
-export const handleGetAuth = async (): Promise<boolean> => {
+export const handleGetAuth = async (): Promise<Profile | null> => {
   const res = await getAuth();
 
   if (!res.ok) {
     console.log(res.error);
-    return false;
+    return null;
   }
 
-  const authenticated: boolean = await res.response.json();
-  return authenticated;
+  const profile: Profile = await res.response.json();
+  return profile;
 }
 
 export const handleLogin = async (
