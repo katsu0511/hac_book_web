@@ -17,7 +17,7 @@ export const Default: Story = {
     },
   },
   args: {
-    className: '!block',
+    setOpenMenu: () => {},
     onLogout: fn(async () => {
       console.log('Logout!');
     }),
