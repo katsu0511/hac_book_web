@@ -2,7 +2,7 @@
 
 export async function getAuth(): Promise<Result> {
   try {
-    const res = await fetch('/api/check-auth', {
+    const res = await fetch('/api/me', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

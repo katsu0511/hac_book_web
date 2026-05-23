@@ -2,12 +2,13 @@
 
 import { Satisfy } from 'next/font/google';
 import useAuthState from '@/lib/hooks/useAuthState';
-import { handleLogout } from '@/lib/api/auth';
-import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
+import { useState } from 'react';
+import { Disclosure, DisclosureButton } from '@headlessui/react';
 import Link from 'next/link';
 import Image from 'next/image';
 import LogoutButton from '@/components/Atoms/LogoutButton';
 import { X, Menu } from 'lucide-react';
+import Drawer from '@/components/Molecules/Drawer';
 
 const satisfy = Satisfy({
   weight: '400',
@@ -15,13 +16,12 @@ const satisfy = Satisfy({
 });
 
 export default function Header({forceAuthenticated}: {forceAuthenticated?: boolean}) {
+  // forceAuthenticated is set only by Storybook
+  // otherwise get authenticated through useAuthState()
   const auth = useAuthState();
   const authenticated = forceAuthenticated ? forceAuthenticated : auth.authenticated;
-  const { refreshAuth, router } = auth;
-
-  const logout = async () => {
-    await handleLogout(refreshAuth, router);
-  }
+  const { profile } = auth;
+  const [openMenu, setOpenMenu] = useState(false);
 
   return (
     <Disclosure as='header' className='relative bg-white w-full h-10 border-b border-[color:var(--color-primary)]'>
@@ -42,13 +42,30 @@ export default function Header({forceAuthenticated}: {forceAuthenticated?: boole
 
             {
               authenticated &&
-              <nav className='hidden md:flex'>
+              <nav className='hidden relative md:flex'>
                 <div className='flex mr-5'>
                   <Link href='/categories' className='block bg-white text-[color:var(--color-primary)] font-bold w-auto h-full leading-[39px] px-2 duration-300 hover:bg-[color:var(--color-primary)] hover:text-white'>Category</Link>
                   <Link href='/transactions' className='block bg-white text-[color:var(--color-primary)] font-bold w-auto h-full leading-[39px] px-2 duration-300 hover:bg-[color:var(--color-primary)] hover:text-white'>Transaction</Link>
                   <Link href='/summary' className='block bg-white text-[color:var(--color-primary)] font-bold w-auto h-full leading-[39px] px-2 duration-300 hover:bg-[color:var(--color-primary)] hover:text-white'>Summary</Link>
                 </div>
-                <LogoutButton />
+                <div className='w-8 h-8 pt-1'>
+                  <Image
+                    className='cursor-pointer duration-300 hover:opacity-60'
+                    onClick={() => setOpenMenu(!openMenu)}
+                    src={profile ? `/${profile.user.icon}` : '/default.png'}
+                    width={32}
+                    height={32}
+                    alt='User'
+                  />
+                </div>
+                {
+                  openMenu &&
+                  <div className='absolute bg-white top-10 right-0 w-50 h-30'>
+                    <Link href='/profile' className='block text-[color:var(--color-primary)] font-bold text-center py-2 duration-300 hover:bg-[color:var(--color-primary)] hover:text-white' onClick={() => setOpenMenu(false)}>Profile</Link>
+                    <Link href='/setting' className='block text-[color:var(--color-primary)] font-bold text-center py-2 duration-300 hover:bg-[color:var(--color-primary)] hover:text-white' onClick={() => setOpenMenu(false)}>Setting</Link>
+                    <LogoutButton setOpenMenu={setOpenMenu} />
+                  </div>
+                }
               </nav>
             }
 
@@ -60,15 +77,7 @@ export default function Header({forceAuthenticated}: {forceAuthenticated?: boole
             }
           </div>
 
-          <DisclosurePanel className='absolute top-full left-0 bg-white w-full border-b border-[color:var(--color-primary)] z-50 shadow-md md:hidden'>
-            <nav className='flex flex-col gap-4 p-4'>
-              <DisclosureButton as={Link} href='/' className='bg-white text-[color:var(--color-primary)] font-bold text-center rounded-sm cursor-pointer duration-300 hover:bg-[color:var(--color-primary)] hover:text-white'>Home</DisclosureButton>
-              <DisclosureButton as={Link} href='/categories' className='bg-white text-[color:var(--color-primary)] font-bold text-center rounded-sm cursor-pointer duration-300 hover:bg-[color:var(--color-primary)] hover:text-white'>Category</DisclosureButton>
-              <DisclosureButton as={Link} href='/transactions' className='bg-white text-[color:var(--color-primary)] font-bold text-center rounded-sm cursor-pointer duration-300 hover:bg-[color:var(--color-primary)] hover:text-white'>Transaction</DisclosureButton>
-              <DisclosureButton as={Link} href='/summary' className='bg-white text-[color:var(--color-primary)] font-bold text-center rounded-sm cursor-pointer duration-300 hover:bg-[color:var(--color-primary)] hover:text-white'>Summary</DisclosureButton>
-              <DisclosureButton onClick={logout} className='mt-10 bg-[color:var(--color-primary)] text-white font-bold text-center rounded-sm cursor-pointer duration-300 hover:bg-white hover:text-[color:var(--color-primary)]'>Logout</DisclosureButton>
-            </nav>
-          </DisclosurePanel>
+          <Drawer />
         </>
       )}
     </Disclosure>
