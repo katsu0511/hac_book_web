@@ -24,9 +24,9 @@ export default function Profile() {
           <Row head='Name' body={profile?.user.name ?? ''} />
           <Row head='Email' body={profile?.user.email ?? ''} />
         </div>
-        <LinkElement page='name' display='Change Name' />
-        <LinkElement page='email' display='Change Email' />
-        <LinkElement page='password' display='Change Password' />
+        <LinkElement page='profile/name' display='Change Name' />
+        <LinkElement page='profile/email' display='Change Email' />
+        <LinkElement page='profile/password' display='Change Password' />
       </div>
     </AuthRedirectToLogin>
   );
