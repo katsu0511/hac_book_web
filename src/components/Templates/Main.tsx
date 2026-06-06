@@ -2,11 +2,12 @@
 
 import { usePathname } from 'next/navigation';
 
+const needItemsCenter = ['/login', '/signup', '/profile/name']
+
 export default function Main({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isAuthPage = pathname === '/login' || pathname === '/signup';
   const classes = [
-    isAuthPage && 'flex items-center',
+    needItemsCenter.includes(pathname) && 'flex items-center',
     'w-full',
     'min-h-[calc(100dvh-80px)]',
     'bg-orange-50',
