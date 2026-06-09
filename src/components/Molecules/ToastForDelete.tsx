@@ -12,7 +12,7 @@ type Props = {
   onDelete: (id?: string | undefined) => Promise<void>
 };
 
-export default function Toast({id, dialogOpen, setDialogOpen, snackbarOpen, setSnackbarOpen, onDelete}: Props) {
+export default function ToastForDelete({id, dialogOpen, setDialogOpen, snackbarOpen, setSnackbarOpen, onDelete}: Props) {
   return (
     <>
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
