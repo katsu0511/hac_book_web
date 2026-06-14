@@ -12,7 +12,7 @@ import { deleteTransaction } from '@/lib/api/actions';
 import { AuthRedirectToLogin } from '@/lib/auth/AuthRedirect';
 import TitleLine from '@/components/Molecules/TitleLine';
 import LinkElement from '@/components/Molecules/LinkElement';
-import Toast from '@/components/Molecules/Toast';
+import ToastForDelete from '@/components/Molecules/ToastForDelete';
 
 const month = getCurrentMonth();
 
@@ -78,7 +78,7 @@ export default function Transactions() {
           </div>
         ))}
         <LinkElement page='transactions/add' display='Add Transaction' />
-        <Toast id={id} dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} snackbarOpen={snackbarOpen} setSnackbarOpen={setSnackbarOpen} onDelete={onDelete} />
+        <ToastForDelete id={id} dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} snackbarOpen={snackbarOpen} setSnackbarOpen={setSnackbarOpen} onDelete={onDelete} />
       </div>
     </AuthRedirectToLogin>
   );
