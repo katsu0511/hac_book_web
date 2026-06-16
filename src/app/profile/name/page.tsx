@@ -13,7 +13,7 @@ import LinkElement from '@/components/Molecules/LinkElement';
 
 const defaultValues = { name: '' };
 
-export default function LoginForm() {
+export default function NameChangeForm() {
   const { buttonLoading, setButtonLoading, error, setError, profile, refreshAuth, router } = useAuthState();
   const { control, handleSubmit } = useForm<User>({ defaultValues });
 
