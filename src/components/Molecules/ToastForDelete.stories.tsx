@@ -1,11 +1,11 @@
-import Toast from './Toast';
+import ToastForDelete from './ToastForDelete';
 import { useState } from 'react';
 import { Button } from '@mui/material';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 const meta = {
-  title: 'Molecules/Toast',
-  component: Toast,
+  title: 'Molecules/ToastForDelete',
+  component: ToastForDelete,
   parameters: {
     layout: 'centered',
   },
@@ -26,7 +26,7 @@ const meta = {
     return (
       <>
         <Button variant='contained' color='error' onClick={() => onOpenDialog()} sx={{ width: 80, height: 40, my: '10px' }}>Delete</Button>
-        <Toast
+        <ToastForDelete
           {...args}
           dialogOpen={dialogOpen}
           setDialogOpen={setDialogOpen}
@@ -37,7 +37,7 @@ const meta = {
       </>
     );
   },
-} satisfies Meta<typeof Toast>;
+} satisfies Meta<typeof ToastForDelete>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

@@ -205,3 +205,26 @@ export async function changeUserName(data: User): Promise<Result> {
     return { ok: false, error: message };
   }
 }
+
+export async function changeUserEmail(data: User): Promise<Result> {
+  try {
+    const res = await fetch(`/api/profile/email`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: data.email }),
+      credentials: 'include'
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      return { ok: res.ok, error: data.message };
+    }
+
+    return { ok: res.ok, response: res };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unknown error occurred.';
+    return { ok: false, error: message };
+  }
+}

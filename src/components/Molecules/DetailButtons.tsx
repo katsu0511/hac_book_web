@@ -4,7 +4,7 @@ import { useState } from 'react';
 import useAuthState from '@/lib/hooks/useAuthState';
 import { deleteTransaction } from '@/lib/api/actions';
 import { Button } from '@mui/material';
-import Toast from '@/components/Molecules/Toast';
+import ToastForDelete from '@/components/Molecules/ToastForDelete';
 
 export default function DetailButtons({id, link}: {id?: string, link: string}) {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -32,7 +32,7 @@ export default function DetailButtons({id, link}: {id?: string, link: string}) {
         <Button variant='contained' onClick={() => onMoveToEdit(id)} sx={{ width: 80 }}>Edit</Button>
         {link === 'transactions' && <Button variant='contained' color='error' onClick={() => setDialogOpen(true)} sx={{ width: 80 }}>Delete</Button>}
       </div>
-      <Toast id={id} dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} snackbarOpen={snackbarOpen} setSnackbarOpen={setSnackbarOpen} onDelete={onDelete} />
+      <ToastForDelete id={id} dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} snackbarOpen={snackbarOpen} setSnackbarOpen={setSnackbarOpen} onDelete={onDelete} />
     </>
   );
 }
