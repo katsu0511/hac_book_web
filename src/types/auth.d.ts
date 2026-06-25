@@ -4,3 +4,8 @@ type AuthFormData = {
   password: string
   passwordConfirm: string
 };
+
+type PasswordFormData = {
+  currentPassword: string
+  newPassword: string
+};

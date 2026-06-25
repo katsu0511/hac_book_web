@@ -32,7 +32,7 @@ export default function EmailChangeForm() {
     setDialogOpen(true);
   };
 
-  const changeName = async () => {
+  const changeEmail = async () => {
     if (!pendingData) return;
     setDialogOpen(false);
     setButtonLoading(true);
@@ -80,7 +80,7 @@ export default function EmailChangeForm() {
         <SubmitButton label='Change Email' error={error} loading={buttonLoading} />
         <LinkElement page='' display='Profile' />
       </Form>
-      <ToastForChangeInfo dialogOpen={dialogOpen} snackbarOpen={snackbarOpen} buttonLoading={buttonLoading} setSnackbarOpen={setSnackbarOpen} handleCancel={handleCancel} changeName={changeName} />
+      <ToastForChangeInfo dialogOpen={dialogOpen} snackbarOpen={snackbarOpen} buttonLoading={buttonLoading} setSnackbarOpen={setSnackbarOpen} handleCancel={handleCancel} changeName={changeEmail} />
     </AuthRedirectToLogin>
   );
 }
