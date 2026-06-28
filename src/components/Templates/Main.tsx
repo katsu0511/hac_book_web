@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 
-const needItemsCenter = ['/login', '/signup', '/profile/name', '/profile/email', '/profile/password']
+const needItemsCenter = ['/login', '/signup', '/profile/name', '/profile/email', '/profile/password', '/setting/saving-goal']
 
 export default function Main({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
