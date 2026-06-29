@@ -18,7 +18,7 @@ export default function Profile() {
           <Row head='Language' body={profile?.setting.language ?? ''} />
           <Row head='Monthly Saving Goal' body={`$${profile?.setting.monthlySavingGoal ?? ''}`} />
         </div>
-        <LinkElement page='saving-goal' display='Change Monthly Saving Goal' />
+        <LinkElement page='setting/saving-goal' display='Change Monthly Saving Goal' />
       </div>
     </AuthRedirectToLogin>
   );
