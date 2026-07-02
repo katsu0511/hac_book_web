@@ -28,7 +28,7 @@ const meta = {
 
     return (
       <>
-        <Button type='submit' variant='contained' color='primary' size='medium' disabled={false} onClick={() => onOpenDialog()} >Change Email</Button>
+        <Button type='submit' variant='contained' color='primary' size='medium' disabled={false} onClick={() => onOpenDialog()} >Change {args.infoType}</Button>
         <ToastForChangeInfo
           {...args}
           dialogOpen={dialogOpen}
@@ -48,6 +48,7 @@ type Story = StoryObj<typeof meta>;
 
 export const ChangeEmailConfirmation: Story = {
   args: {
+    infoType: 'email',
     dialogOpen: true,
     snackbarOpen: false,
     buttonLoading: false,
@@ -57,9 +58,29 @@ export const ChangeEmailConfirmation: Story = {
   },
 };
 
-export const SuccessSnackbar: Story = {
+export const ChangePasswordConfirmation: Story = {
+  args: {
+    infoType: 'password',
+    dialogOpen: true,
+    snackbarOpen: false,
+    buttonLoading: false,
+    setSnackbarOpen: () => {},
+    handleCancel: () => {},
+    changeName: async () => {},
+  },
+};
+
+export const SuccessChangeEmailSnackbar: Story = {
   args: {
     ...ChangeEmailConfirmation.args,
+    dialogOpen: false,
+    snackbarOpen: true,
+  },
+};
+
+export const SuccessChangePasswordSnackbar: Story = {
+  args: {
+    ...ChangePasswordConfirmation.args,
     dialogOpen: false,
     snackbarOpen: true,
   },
