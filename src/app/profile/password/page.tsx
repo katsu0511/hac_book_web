@@ -79,7 +79,7 @@ export default function PasswordChangeForm() {
         <SubmitButton label='Change Password' error={error} loading={buttonLoading} />
         <LinkElement page='' display='Profile' />
       </Form>
-      <ToastForChangeInfo dialogOpen={dialogOpen} snackbarOpen={snackbarOpen} buttonLoading={buttonLoading} setSnackbarOpen={setSnackbarOpen} handleCancel={handleCancel} changeName={changePassword} />
+      <ToastForChangeInfo infoType='password' dialogOpen={dialogOpen} snackbarOpen={snackbarOpen} buttonLoading={buttonLoading} setSnackbarOpen={setSnackbarOpen} handleCancel={handleCancel} changeName={changePassword} />
     </AuthRedirectToLogin>
   );
 }

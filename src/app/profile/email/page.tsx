@@ -80,7 +80,7 @@ export default function EmailChangeForm() {
         <SubmitButton label='Change Email' error={error} loading={buttonLoading} />
         <LinkElement page='' display='Profile' />
       </Form>
-      <ToastForChangeInfo dialogOpen={dialogOpen} snackbarOpen={snackbarOpen} buttonLoading={buttonLoading} setSnackbarOpen={setSnackbarOpen} handleCancel={handleCancel} changeName={changeEmail} />
+      <ToastForChangeInfo infoType='email' dialogOpen={dialogOpen} snackbarOpen={snackbarOpen} buttonLoading={buttonLoading} setSnackbarOpen={setSnackbarOpen} handleCancel={handleCancel} changeName={changeEmail} />
     </AuthRedirectToLogin>
   );
 }
